@@ -1172,6 +1172,23 @@ Tables must be explicitly initialized
 Composing indexes is more useful when you are using sparse 
 boolean matrices. Use `pairs` to traverse the 
 
+Multiplying sparse matrices
+```lua
+function mult(a,b)
+	local c = {} -- Return value
+	for i = 1, #a do
+		local resultline = {} -- c[i]
+		for k, va in pairs(a[i]) do
+			for j, vb in pairs(b[k]) do
+				local res = (resultline or 0) + va * vb
+				resultline[j] = (res ~= 0) and res or nil
+			end
+		end
+		c[i] = resultline
+	end
+	return c
+end
+```
 ## Linked lists
 Each node is represented by a table
 
@@ -1181,7 +1198,103 @@ node = {
 	value = val
 }
 ```
-We can also represent other data structures this way, though it usually isn't necessary
+We can also represent other data structures this way, though it 
+usually isn't necessary
 
 ## Queues and deques
-We can implement them with the help of `table.insert` and `table.remove`. As usually a queue doesn't have that many elements, so indexing by an ever-increasing integer is mostly whats more efficient
+We can implement them with the help of `table.insert` and `table.remove`. 
+As usually a queue doesn't have that many elements, so indexing by an 
+ever-increasing integer is mostly whats more efficient
+
+```lua
+function listNew()
+	return {first = 0, last = -1}
+end
+
+function pushFirst(list, value)
+	list.first = list.first - 1
+	list[list.first] = value
+end
+
+function pushLast(list, value)
+	list.last = list.last + 1
+	list[list.last] = value
+end
+
+function popFirst(list)
+	if list.first > list.last then
+		error("list is empty")
+	end
+	local value = list[list.first]
+	list[list.first] = nil -- allow garbage collection
+	list.first = list.first + 1
+	return value
+end
+
+function popLast(list)
+	if list.first > list.last then
+		error("list is empty")
+	end
+	local value = list[list.last]
+	list[list.last] = nil
+	list.last = list.last - 1
+	return value
+end
+```
+ 
+## Reverse tables
+We seldom do searches in Lua. We normally index those 
+things we want to search in a table with the info we
+need in them
+
+## Sets and bags
+For sets, just use a table where the indexes are the
+elements, and they all have true values
+ 
+For bags (Or multisets), we do the same thing as with
+sets, but we assign them a counter instead of true. 
+We delete the keys that end up having an occurrence 
+of zero (So it still returns a false value if latter
+called)
+
+## String buffers
+Concatenation can be expensive. More so if we are 
+copying enormous amounts of data over and over, 
+like strings in a concatenation. For this, we have
+the string buffers.
+
+We achieve the same behaviour in Lua using the 
+`table.concat` method, which returns the concatenation
+of all strings in a table
+
+`table.concat(table[, separator)` is the full syntax, 
+it accepts a delimiter to use between data.
+
+## Graphs
+There are many implementations, although they are all
+pretty straightforward
+
+**DFS**
+```lua
+function findpath(curr, to, path, visited)
+	path = path or {}
+	visited = visited or {}
+
+	if visited[curr] then
+		return nil
+	end
+
+	visited[curr] = true
+	path[#path + 1] = curr
+
+	if curr == to then
+		return path
+	end
+
+	for node in pairs(curr.adj) do
+		local p = findpath(node, to, path, visited)
+		if p then return p end
+	end
+	table.remove(path)
+end
+```
