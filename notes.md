@@ -1172,4 +1172,16 @@ Tables must be explicitly initialized
 Composing indexes is more useful when you are using sparse 
 boolean matrices. Use `pairs` to traverse the 
 
+## Linked lists
+Each node is represented by a table
 
+```lua
+node = {
+	next = node,
+	value = val
+}
+```
+We can also represent other data structures this way, though it usually isn't necessary
+
+## Queues and deques
+We can implement them with the help of `table.insert` and `table.remove`. As usually a queue doesn't have that many elements, so indexing by an ever-increasing integer is mostly whats more efficient
