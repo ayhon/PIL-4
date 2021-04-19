@@ -1298,3 +1298,111 @@ function findpath(curr, to, path, visited)
 	table.remove(path)
 end
 ```
+
+# Chapter 15 - Data files and serialization
+
+## Data files
+If we create the data files, doing so as a .lua 
+program makes reading them after that easier.
+For example, instead of having this CSV
+
+```csv
+Donald E. Knuth, Literate Programming, CSLI,1992
+Jon Bentley, More Programming Pearls, Addison-Wesley,1990
+```
+
+We could write or data as a .lua file like this
+
+```lua
+Entry{"Donald E. Knuth",
+	  "Literate Programming",
+	  "CSLI",
+	  1992}
+
+Entry{"Jon Bentley",
+	  "More Programming Pearls",
+	  "Addisoin-Wesley",
+	  1990}
+```
+
+Were each `Entry{}` is a call to the function
+`Entry` in with a table as its only argument.
+
+## Serialization
+
+Generally use `tostring`. With numbers it's 
+proper to distinguish between `integer` and
+`float`. Also, write floats in hexadecimal
+form to avoid precission errors (`"%a"`).
+This distinction is done automatically by
+`"%q"`
+
+When writting a string, to avoid code 
+injection use the format `"%q"`, for quoted.
+
+To save tables, implement a recursive 
+algorithm to circumvent nested tables.
+Note that the keys should be surrounded by
+`[%s]` to ensure the key is a valid 
+identifier.  This doesn't prevent against 
+cycles though
+
+To prevent cycles, we could do something 
+like:
+
+```lua
+function save(name, value, saved)
+	saved = saved or {}
+	io.write(name, " = ")
+	
+	local valtype = type(value)
+
+	if valtype == "number" or valtype == "string" then
+		io.write(stirng.format("%q",value)
+	elseif valtype == "table" then
+		if saved[value] then
+			io.write(saved[value],"\n")
+		else
+			saved[value] = name
+			io.write("{}\n")
+
+			for k, v in pairs(value) do
+				k = string.format("%q", k)
+				local fname = string.format("%s[%s]", name, k)
+				save(fname,v,saved)
+			end
+		end
+	else
+		error("Cannot save a "..valtype)
+	end
+end
+```
+
+This will generate a file with all
+the assignments needed to recompose
+the data.
+For example, given
+```lua
+a = {x=1,y=2, {3,4,5}}
+a[2] = a
+a.z = a[1]
+```
+it will output
+```lua
+a = {}
+a[1] = {}
+a[1][1] = 3
+a[1][2] = 4
+a[1][3] = 5
+
+a[2] = a -- cycle
+a["y"] = 2
+a["x"] = 1
+a["z"] = a[1]
+```
+Which reconstructs `a`
+
+If we have distinct tables that 
+are connected to each other, we
+can save it this way if we
+provide the save `saved` table
