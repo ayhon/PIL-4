@@ -1358,7 +1358,7 @@ function save(name, value, saved)
 	local valtype = type(value)
 
 	if valtype == "number" or valtype == "string" then
-		io.write(stirng.format("%q",value)
+		io.write(stirng.format("%q",value))
 	elseif valtype == "table" then
 		if saved[value] then
 			io.write(saved[value],"\n")
@@ -1406,3 +1406,116 @@ If we have distinct tables that
 are connected to each other, we
 can save it this way if we
 provide the save `saved` table
+
+# Chapter 16 - Compilation, execution and errors
+Compilation in Lua is expensive, be careful.
+
+`loadfile` loads a file, compiles it, an returns 
+the code as a function. `dofile` is a wrapper of 
+`loadfile`
+
+Also, `loadfile` doesn't raise errors but 
+returns error codes. This is, `nil` as the first
+argument and an error message as its second.
+
+`load` behaves like `loadfile`, but takes 
+strings or functions as an argument. `load` 
+always behaves in the global environment, that
+is
+```lua 
+i = 0
+local i = 1
+f = load("print(i)")
+g = function() print(i) end
+f()
+g()
+```
+will print 
+```lua
+0
+1
+```
+
+This variables also don't have any kind of 
+effect (Don't create variables, write to 
+files, etc)
+
+We can precompile Lua code with the `luac`
+command. 
+```bash
+luac -o prog.lc prog.lua
+``` 
+Precompiled code can be run by
+the `lua` interpreter
+
+## Errors
+Lua can't just crash, as it's designed to
+be an embedded language.
+
+To raise an error, use `error(err_msg)`
+
+To raise an error if a condition happens,
+use `assert(cond, err_msg)`. Be aware
+that `assert` is a regular function, that
+is, it evaluates both arguments before
+execution
+
+A program when presented with an error 
+can either return an error code (`nil` or
+`false` typically), or raise an error.
+
+You should raise an error only if the 
+mistake is easy to detect by other means
+(like a call to `math.sin` with a table)
+and return an error code if it's more
+difficult (like in `io.open(fn)`, if
+`fn` is not a file)
+
+## Error-handling
+To handle errors in a piece of code, 
+surround the code in a function and 
+provide it to `pcall`. 
+
+`pcall` calls its first argument in
+protected mode, that is, no errors will
+be raised.
+
+If the call fails, it will return `false`
+and an error message
+
+If the call succeeds, it will return 
+`true` plus any values returned by the
+call.
+
+**An error message doesn't actually 
+need to be a `string`, it can be any
+object (like a table)**
+
+However, if we use a string, Lua will
+fill it with more information about
+where the error happened.
+
+If we know an error occurred in the 
+caller function, not where it was 
+detected, we can communicate this by 
+supplying an extra argument to `error`
+
+```lua
+error("String expected", 2)
+```
+
+The `2` tells Lua the error happened
+on level 2 in the calling hierarchy
+
+Because `pcall` destroys part of the 
+stack, we don't get part of the 
+traceback. To amend this, we use 
+`xpcall(func, handler)`, which calls
+its second argument before the stack
+unwinds. 
+
+Useful functions to put there are: 
+ * `debug.debug`, which gives you a Lua
+ prompt, to figure out what's wrong
+ * `debug.traceback`, which builds an 
+ extended error message with a traceback
