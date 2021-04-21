@@ -253,7 +253,7 @@ Performs all possible substitutions. Also returns the number of them after the m
 `replace` can also be a function 
 
 #### The `utf8` library
-Because 1 char $\not\rightarrow$ 1 byte, we have to take measures
+Because 1 char $\not\rightarrow $ 1 byte, we have to take measures
 * `utf8.len(string)`
 * `utf8.char(num1, ... numN)` (See `string.char`)
 * `utf8.codepoint(string, idx1, ..., idx)` (See `string.byte`)
@@ -291,12 +291,12 @@ length of a structure separately
 ### List traversal
 ```lua
 for key, value in pairs(datatable) do
-	-- Code here
+    -- Code here
 end
 ```
 ```lua
 for key, value in ipairs(list) do
-	-- Code here
+    -- Code here
 end
 ```
 Prefer `ipairs` over `pairs` with sequences. `pairs` does not ensure
@@ -339,8 +339,8 @@ Also, `o:foo()` translates to `o.foo(o)`
 Syntax:
 ```lua
 function name(args)
-	-- code here
-	return val1, val2 -- optional
+    -- code here
+    return val1, val2 -- optional
 end
 ```
 
@@ -349,41 +349,41 @@ If a parameter isn't provided, `nil` is asigned. If any extra parameters are asi
 Functions can return multiple values **if they are the last element (or only) of an expresion list**, using the `,` list syntax.
 ```lua
 function foo() return 1, 2, 3 end
-> x, y = foo()	  -- x = 1, y = 2
+> x, y = foo()      -- x = 1, y = 2
 > x, y = foo(), 1 -- x = 1, y = 1
 ```
 The `,` lists only appear in:
  * Multiple assignments
-	 ```lua
-	 i,e = string.find("hello", "ll")
-	 ```
+     ```lua
+     i,e = string.find("hello", "ll")
+     ```
  * Arguments to function calls
-	 ```lua
-	 string.char(1, 2, 3, 4)
-	 ```
+     ```lua
+     string.char(1, 2, 3, 4)
+     ```
  * Table constructors
-	 ```lua
-	 t = {1, 2, 3, 4}
-	 ```
+     ```lua
+     t = {1, 2, 3, 4}
+     ```
  * `return` statements
-	 ```lua
-	 return 1, 2, 3, 4
-	 ```
+     ```lua
+     return 1, 2, 3, 4
+     ```
 You can make functions take an arbitrary number of arguments. 
 **Extra** arguments are represented with `...`
 ```lua
 function fwrite (fmt, ...)
-	return io.write(string.format(fmt, ...))
+    return io.write(string.format(fmt, ...))
 end
 ```
 ```lua
 function (a,b,c)
-	--- Code here
+    --- Code here
 end
 -- EQUIVALENT
 function (...)
-	local a, b, c = ...
-	--- Code here
+    local a, b, c = ...
+    --- Code here
 end
 ```
 Use `{...}` to treat arguments as if they were a table. You can also
@@ -407,15 +407,15 @@ Lua has tail-call elimination. This means that, if we are in the
 following situation
 ```lua
 function f (x)
-	x = x + 1
-	retur g(x)
+    x = x + 1
+    retur g(x)
 end
 ```
 Lua recognizes that `f` doesn't have to wait for `g` to return, and
 liberates such space from the stack, making functions such as 
 ```lua
 function f (n)
-	if n > 0 then return f(n-1) end
+    if n > 0 then return f(n-1) end
 end
 ```
 never overflow the stack.
@@ -487,7 +487,7 @@ arguments like `read` does.
 The following code copies the current input to the current output over blocks of 8 KB
 ```lua
 for bloc in io.input():lines(2^13) do -- 2^13 = 8 KB
-	io.write(block)
+    io.write(block)
 end
 ```
 
@@ -532,10 +532,10 @@ chunk, local variables are destroyed the moment they are run
 If you need more granular control over blocks of code, the `do` block represents a different scope
 ```lua
 do
-	local a2 = 2 * a
-	local d = (b^2 - 4+a*c)^1/2
-	x1 = (-b + 2)/a2
-	x2 = (-b - 2)/a2
+    local a2 = 2 * a
+    local d = (b^2 - 4+a*c)^1/2
+    x1 = (-b + 2)/a2
+    x2 = (-b - 2)/a2
 end
 print(x1, x2)
 ```
@@ -549,8 +549,8 @@ local foo = foo
 In a loop, the scope of a local variable declared in a loop includes the condition
 ```lua
 repeat
-	sqr = (sqr + x/sqr)/2
-	local error = math.abs(sqr^2 - x)
+    sqr = (sqr + x/sqr)/2
+    local error = math.abs(sqr^2 - x)
 until error < x/1e3
 ```
 
@@ -571,16 +571,16 @@ It's useful when you want to replicate some features not present in Lua like:
 For example:
 ```lua
 while some_condition do
-	::redo::
-	if some_other_condition then
-		goto continue
-	else
-		if yet_another_condition then
-			goto redo	
-		end
-		-- Code here
-	end
-	::continue::
+    ::redo::
+    if some_other_condition then
+        goto continue
+    else
+        if yet_another_condition then
+            goto redo    
+        end
+        -- Code here
+    end
+    ::continue::
 end
 ```
 
@@ -591,37 +591,37 @@ More than this is not advisable
 goto room1 -- initial room
 
 ::room1:: do
-	local move = io.read()
-	if move == "south" then goto room3
-	elseif move == "east" then goto room2
-	else
-		print("invalid move")
-		goto room1 -- stay in the same room
-	end
+    local move = io.read()
+    if move == "south" then goto room3
+    elseif move == "east" then goto room2
+    else
+        print("invalid move")
+        goto room1 -- stay in the same room
+    end
 end
 
 ::room2:: do
-	local move = io.read()
-	if move == "south" then goto room4
-	elseif move == "west" then goto room1
-	else
-		print("invalid move")
-		goto room2 -- stay in the same room
-	end
+    local move = io.read()
+    if move == "south" then goto room4
+    elseif move == "west" then goto room1
+    else
+        print("invalid move")
+        goto room2 -- stay in the same room
+    end
 end
 
 ::room3:: do
-	local move = io.read()
-	if move == "north" then goto room1
-	elseif move == "east" then goto room4
-	else
-		print("invalid move")
-		goto room3 -- stay in the same room
-	end
+    local move = io.read()
+    if move == "north" then goto room1
+    elseif move == "east" then goto room4
+    else
+        print("invalid move")
+        goto room3 -- stay in the same room
+    end
 end
 
 ::room4:: do
-	print("Congratulations, you won")
+    print("Congratulations, you won")
 end
 ```
 
@@ -659,6 +659,7 @@ We call `function(args) body end` the function constructor
 
 Anonymous functions are used in `table.sort(table, orderFunction)`. Functions that handle functions as
 arguments or return types are called high-order functions.
+
 ```lua
 function derivative(f, eps)
     eps = eps or 1e-4
@@ -915,7 +916,7 @@ This can also be used in `string.gsub` to compose the `replace` argument
 An useful idiom to trim a string that uses this fact is the following
 ```lua
 function trim(s)
-	return string.gsub(s, "^%s*(.-)%s*$", "%1")
+    return string.gsub(s, "^%s*(.-)%s*$", "%1")
 end
 ```
 
@@ -924,7 +925,7 @@ We saw that `string.gusb` can take both functions and tables as a replacement.
 A useful example with these
 ```lua
 function expand(s)
-	return string.gsub(s, "$(%w*)", _G)
+    return string.gsub(s, "$(%w*)", _G)
 end
 ```
 This will replace any occurrence of `$varname` with the value of `varname` if
@@ -932,11 +933,11 @@ that is a global variable.
 
 ```lua
 function latex2xml(s)
-	returns string.gsub(s, "\\(%a)\(%b{})}", function (tag, body)
-		body = string.sub(body, 2, -2) 		-- get rid of { }
-		body = latex2xml(body) 			   	-- handle nested commands
-		return string.format("<%s> %s </%s>", tag, body, tag)
-	end
+    returns string.gsub(s, "\\(%a)\(%b{})}", function (tag, body)
+        body = string.sub(body, 2, -2)         -- get rid of { }
+        body = latex2xml(body)                    -- handle nested commands
+        return string.format("<%s> %s </%s>", tag, body, tag)
+    end
 end
 ```
 
@@ -944,13 +945,13 @@ An emtpy capture (`()`) captures its position in the subject
 string.  A good example of its use is in tab expansion
 ```lua
 function expandTabs(s)
-	tab = tab or 8
-	local corr = 0
-	s = string.gsub(s, "()\t", function (p)
-		local sp = tab - (p - 1 + corr)%tab
-		corr = corr - 1 + sp
-		returns string.rep(" ", sp)
-	end)
+    tab = tab or 8
+    local corr = 0
+    s = string.gsub(s, "()\t", function (p)
+        local sp = tab - (p - 1 + corr)%tab
+        corr = corr - 1 + sp
+        returns string.rep(" ", sp)
+    end)
 end
 ```
 
@@ -963,26 +964,26 @@ patterns (Patterns that match an empty string)
 local counter = {}
 
 for line in io.lines() do
-	for word in string.gmatch(line, "%w+") do
-		counter[word] = (counter[word] or 0) + 1
-	end
+    for word in string.gmatch(line, "%w+") do
+        counter[word] = (counter[word] or 0) + 1
+    end
 end
 
 local word = {}
 
 for w in pairs(counter) do
-	words[#words+1] = w
+    words[#words+1] = w
 end
 
 table.sort(words, function (w1, w2)
-	return counter[w1] > counter[w2] or
-		   counter[w1] == counter[w2] and w1 < w2
+    return counter[w1] > counter[w2] or
+           counter[w1] == counter[w2] and w1 < w2
 end)
 
 local n = math.min(tonumber(arg[1]) or math.huge, #words)
 
 for i = 1, n do
-	io.write(words[i], "\t", counter[words[i]], "\n")
+    io.write(words[i], "\t", counter[words[i]], "\n")
 end
 ```
 
@@ -1138,7 +1139,7 @@ local data = f:read("a")
 local validchars = "[%g%s]"
 local pattern = "("..string.rep(validchars,6).."+)\0"
 for w in string.gmatch(data, pattern) do
-	print(w)
+    print(w)
 end
 ```
 
@@ -1147,13 +1148,13 @@ Create a hexdump
 local f = assert(io.open(arg[1], "rb"))
 local blocksize = 16
 for bytes in f:lines(blocksize) do
-	for i = 1, #bytes do
-		local b = stirng.unpack("B", bytes, i)
-		io.write(string.format("%02X ", b))
-	end
-	io.write(stirng.rep("   ", blocksize - #bytes)
-	bytes = string.gsub(bytes, "%c", ".")
-	io.write(" ", bytes, "\n")
+    for i = 1, #bytes do
+        local b = stirng.unpack("B", bytes, i)
+        io.write(string.format("%02X ", b))
+    end
+    io.write(stirng.rep("   ", blocksize - #bytes)
+    bytes = string.gsub(bytes, "%c", ".")
+    io.write(" ", bytes, "\n")
 end
 ```
 
@@ -1175,18 +1176,18 @@ boolean matrices. Use `pairs` to traverse the
 Multiplying sparse matrices
 ```lua
 function mult(a,b)
-	local c = {} -- Return value
-	for i = 1, #a do
-		local resultline = {} -- c[i]
-		for k, va in pairs(a[i]) do
-			for j, vb in pairs(b[k]) do
-				local res = (resultline or 0) + va * vb
-				resultline[j] = (res ~= 0) and res or nil
-			end
-		end
-		c[i] = resultline
-	end
-	return c
+    local c = {} -- Return value
+    for i = 1, #a do
+        local resultline = {} -- c[i]
+        for k, va in pairs(a[i]) do
+            for j, vb in pairs(b[k]) do
+                local res = (resultline or 0) + va * vb
+                resultline[j] = (res ~= 0) and res or nil
+            end
+        end
+        c[i] = resultline
+    end
+    return c
 end
 ```
 ## Linked lists
@@ -1194,8 +1195,8 @@ Each node is represented by a table
 
 ```lua
 node = {
-	next = node,
-	value = val
+    next = node,
+    value = val
 }
 ```
 We can also represent other data structures this way, though it 
@@ -1208,37 +1209,37 @@ ever-increasing integer is mostly whats more efficient
 
 ```lua
 function listNew()
-	return {first = 0, last = -1}
+    return {first = 0, last = -1}
 end
 
 function pushFirst(list, value)
-	list.first = list.first - 1
-	list[list.first] = value
+    list.first = list.first - 1
+    list[list.first] = value
 end
 
 function pushLast(list, value)
-	list.last = list.last + 1
-	list[list.last] = value
+    list.last = list.last + 1
+    list[list.last] = value
 end
 
 function popFirst(list)
-	if list.first > list.last then
-		error("list is empty")
-	end
-	local value = list[list.first]
-	list[list.first] = nil -- allow garbage collection
-	list.first = list.first + 1
-	return value
+    if list.first > list.last then
+        error("list is empty")
+    end
+    local value = list[list.first]
+    list[list.first] = nil -- allow garbage collection
+    list.first = list.first + 1
+    return value
 end
 
 function popLast(list)
-	if list.first > list.last then
-		error("list is empty")
-	end
-	local value = list[list.last]
-	list[list.last] = nil
-	list.last = list.last - 1
-	return value
+    if list.first > list.last then
+        error("list is empty")
+    end
+    local value = list[list.last]
+    list[list.last] = nil
+    list.last = list.last - 1
+    return value
 end
 ```
  
@@ -1277,25 +1278,25 @@ pretty straightforward
 **DFS**
 ```lua
 function findpath(curr, to, path, visited)
-	path = path or {}
-	visited = visited or {}
+    path = path or {}
+    visited = visited or {}
 
-	if visited[curr] then
-		return nil
-	end
+    if visited[curr] then
+        return nil
+    end
 
-	visited[curr] = true
-	path[#path + 1] = curr
+    visited[curr] = true
+    path[#path + 1] = curr
 
-	if curr == to then
-		return path
-	end
+    if curr == to then
+        return path
+    end
 
-	for node in pairs(curr.adj) do
-		local p = findpath(node, to, path, visited)
-		if p then return p end
-	end
-	table.remove(path)
+    for node in pairs(curr.adj) do
+        local p = findpath(node, to, path, visited)
+        if p then return p end
+    end
+    table.remove(path)
 end
 ```
 
@@ -1315,14 +1316,14 @@ We could write or data as a .lua file like this
 
 ```lua
 Entry{"Donald E. Knuth",
-	  "Literate Programming",
-	  "CSLI",
-	  1992}
+      "Literate Programming",
+      "CSLI",
+      1992}
 
 Entry{"Jon Bentley",
-	  "More Programming Pearls",
-	  "Addisoin-Wesley",
-	  1990}
+      "More Programming Pearls",
+      "Addisoin-Wesley",
+      1990}
 ```
 
 Were each `Entry{}` is a call to the function
@@ -1352,29 +1353,29 @@ like:
 
 ```lua
 function save(name, value, saved)
-	saved = saved or {}
-	io.write(name, " = ")
-	
-	local valtype = type(value)
+    saved = saved or {}
+    io.write(name, " = ")
+    
+    local valtype = type(value)
 
-	if valtype == "number" or valtype == "string" then
-		io.write(stirng.format("%q",value))
-	elseif valtype == "table" then
-		if saved[value] then
-			io.write(saved[value],"\n")
-		else
-			saved[value] = name
-			io.write("{}\n")
+    if valtype == "number" or valtype == "string" then
+        io.write(stirng.format("%q",value))
+    elseif valtype == "table" then
+        if saved[value] then
+            io.write(saved[value],"\n")
+        else
+            saved[value] = name
+            io.write("{}\n")
 
-			for k, v in pairs(value) do
-				k = string.format("%q", k)
-				local fname = string.format("%s[%s]", name, k)
-				save(fname,v,saved)
-			end
-		end
-	else
-		error("Cannot save a "..valtype)
-	end
+            for k, v in pairs(value) do
+                k = string.format("%q", k)
+                local fname = string.format("%s[%s]", name, k)
+                save(fname,v,saved)
+            end
+        end
+    else
+        error("Cannot save a "..valtype)
+    end
 end
 ```
 
@@ -1605,7 +1606,7 @@ function was defined for the package provided.
 ```lua
 local M = {}
 local function new (r, i) -- Makes the function private
-	reutrn {r = r, i = i}
+    reutrn {r = r, i = i}
 end
 
 M.new = new
@@ -1613,28 +1614,28 @@ M.new = new
 M.i = new(0,1) -- Constant i
 
 function M.add(c1, c2)
-	return new (c1.r + c2.r, c1.i + c2.i)
+    return new (c1.r + c2.r, c1.i + c2.i)
 end
 
 function M.sub(c1, c2)
-	return new (c1.r - c2.r, c1.i - c2.i)
+    return new (c1.r - c2.r, c1.i - c2.i)
 end
 
 function M.mul(c1, c2)
-	return new (c1.r * c2.r, c1.i * c2.i)
+    return new (c1.r * c2.r, c1.i * c2.i)
 end
 
 local function inv(c) -- Makes the function private
-	local n = c.r^2 + c.i^2
-	return new(c.r/n, -c.i/n)
+    local n = c.r^2 + c.i^2
+    return new(c.r/n, -c.i/n)
 end
 
 function M.div (c1,c2)
-	return M.mul(c1, inv(c2))
+    return M.mul(c1, inv(c2))
 end
 
 function M.tostring(c)
-	return string.format("(%g,%g)",c.r,c.i)
+    return string.format("(%g,%g)",c.r,c.i)
 end
 
 return M
@@ -1659,4 +1660,6 @@ A package is the complete tree of modules
 If a path has no `?` in `package.path`, it 
 will always be recognized as a valid path.
 
+---
 
+# Chapter 18 - Iterators and the generic for
