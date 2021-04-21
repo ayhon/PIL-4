@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>notes</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="pandoc.css" />
+</head>
+<body>
+<h1 id="chapter-1---getting-started">Chapter 1 - Getting started</h1>
+<p>chunks → piece of code * Interactive mode: Execute code line by line * Executing files: Execute whole <strong>chunks</strong> of code</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">function</span> love<span class="op">.</span>update<span class="op">()</span></a>
+<a class="sourceLine" id="cb1-2" title="2">    x <span class="op">=</span> <span class="st">&quot;Hello world&quot;</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="cf">return</span> x</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="cf">end</span></a></code></pre></div>
+<p>Use <code>lua -i file</code> to let Lua know we want to enter interactive mode after running a file. Useful for debugging<br />
+We can also use the function <code>dofile("file.lua")</code> to run chunks of Lua code from a file</p>
+<p>Use <code>lua -e "code"</code> to run some code in the interpreter</p>
+<p>Use <code>lua -l lib</code> to load a library <code>lib</code></p>
+<p>The interpreter always outputs the values of expressions. To prevent this output from an expresion, you can append a <code>;</code> to it</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb2-1" title="1"><span class="op">&gt;</span> <span class="fu">math.floor</span><span class="op">(</span><span class="dv">3.14</span><span class="op">)</span> <span class="co">--&gt; Out: 3</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="op">&gt;</span> <span class="fu">math.floor</span><span class="op">(</span><span class="dv">3.14</span><span class="op">)</span> <span class="co">--&gt; Nothing</span></a></code></pre></div>
+<p>When a script is called with arguments, you can access them through the global table <code>args</code></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb3-1" title="1">$ lua <span class="op">-</span>e <span class="st">&quot;sin=math.sin&quot;</span> script a b <span class="co">--[[</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co">    a[-3]    &quot;lua&quot;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">    a[-2]    &quot;-e&quot;</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co">    a[-1]    &quot;sin=math.sin&quot;</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">    a[0]    &quot;script&quot;</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">    a[1]    &quot;a&quot;</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">    a[2]    &quot;b&quot;</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co">]]</span></a></code></pre></div>
+<p>You usually only need the positive indexes.</p>
+<h2 id="comments">Comments</h2>
+<p>With <code>--</code> as <code>//</code><br />
+With <code>--[[</code> and <code>]]</code> as <code>/*</code> and <code>*/</code></p>
+<h4 id="common-trick-with-comments">Common trick with comments</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb4-1" title="1"><span class="co">--[[</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="co">code here</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="co">--]]</span></a></code></pre></div>
+<p>Now add one more <code>-</code></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb5-1" title="1"><span class="co">---[[</span></a>
+<a class="sourceLine" id="cb5-2" title="2">code here</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">--]]</span></a></code></pre></div>
+<p>and we uncomment a whole section at once</p>
+<h2 id="variables">Variables</h2>
+<p>Global variables don’t need a declaration, just use them. Return <code>nil</code> if not initialized.</p>
+<h3 id="types">Types</h3>
+<p>There are 8, though Lua is dinamically typed:</p>
+<ol type="1">
+<li>nil (empty, like <code>null</code> in Java, but more general)</li>
+<li>boolean (false is <code>false</code> and <code>nil</code>, else true)</li>
+<li>number</li>
+<li>string</li>
+<li>userdata</li>
+<li>function</li>
+<li>threads</li>
+<li>tables</li>
+</ol>
+<p>The function <code>type()</code> returns an objects type’s name as a string</p>
+<h1 id="chapter-2---interlude-the-eight-queen-puzzle">Chapter 2 - Interlude, The Eight-Queen puzzle</h1>
+<div class="sourceCode" id="cb6"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb6-1" title="1"><span class="cn">N</span> <span class="op">=</span> <span class="dv">8</span> <span class="co">-- board size</span></a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="co">-- Is (n,c) safe from attacks?</span></a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="kw">function</span> isplaceok<span class="op">(</span>a<span class="op">,</span> n<span class="op">,</span> c<span class="op">)</span></a>
+<a class="sourceLine" id="cb6-5" title="5">    <span class="cf">for</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> n<span class="op">-</span><span class="dv">1</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb6-6" title="6">        <span class="cf">if</span> <span class="op">(</span>a<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> c<span class="op">)</span> <span class="kw">or</span></a>
+<a class="sourceLine" id="cb6-7" title="7">           <span class="op">(</span>a<span class="op">[</span>i<span class="op">]-</span>i <span class="op">==</span> c<span class="op">-</span>n<span class="op">)</span> <span class="kw">or</span></a>
+<a class="sourceLine" id="cb6-8" title="8">           <span class="op">(</span>a<span class="op">[</span>i<span class="op">]+</span>i <span class="op">==</span> c<span class="op">+</span>n<span class="op">)</span> <span class="cf">then</span></a>
+<a class="sourceLine" id="cb6-9" title="9">            <span class="cf">return</span> <span class="kw">false</span></a>
+<a class="sourceLine" id="cb6-10" title="10">        <span class="cf">end</span></a>
+<a class="sourceLine" id="cb6-11" title="11">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb6-12" title="12">    <span class="cf">return</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb6-14" title="14"></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="co">-- Print state of board a</span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="kw">function</span> printSolution <span class="op">(</span>a<span class="op">)</span></a>
+<a class="sourceLine" id="cb6-17" title="17">    <span class="cf">for</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> <span class="cn">N</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb6-18" title="18">        <span class="cf">for</span> j <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> <span class="cn">N</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb6-19" title="19">            <span class="fu">io.write</span><span class="op">(</span> a<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> j <span class="kw">and</span> <span class="st">&quot;X&quot;</span> <span class="kw">or</span> <span class="st">&quot;-&quot;</span><span class="op">,</span> <span class="st">&quot; &quot;</span> <span class="op">)</span></a>
+<a class="sourceLine" id="cb6-20" title="20">        <span class="cf">end</span></a>
+<a class="sourceLine" id="cb6-21" title="21">        <span class="fu">io.write</span><span class="op">(</span><span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb6-22" title="22">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb6-23" title="23">    <span class="fu">io.write</span><span class="op">(</span><span class="st">&#39;</span><span class="sc">\n</span><span class="st">&#39;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb6-24" title="24"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb6-25" title="25"></a>
+<a class="sourceLine" id="cb6-26" title="26"><span class="co">-- Add to board a all the queens from n to N</span></a>
+<a class="sourceLine" id="cb6-27" title="27"><span class="kw">function</span> addqueen <span class="op">(</span>a<span class="op">,</span>n<span class="op">)</span></a>
+<a class="sourceLine" id="cb6-28" title="28">    <span class="cf">if</span> n <span class="op">&gt;</span> <span class="cn">N</span> <span class="cf">then</span></a>
+<a class="sourceLine" id="cb6-29" title="29">        printSolution<span class="op">(</span>a<span class="op">)</span></a>
+<a class="sourceLine" id="cb6-30" title="30">    <span class="cf">else</span></a>
+<a class="sourceLine" id="cb6-31" title="31">        <span class="cf">for</span> c <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> <span class="cn">N</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb6-32" title="32">            <span class="cf">if</span> isplaceok<span class="op">(</span>a<span class="op">,</span>n<span class="op">,</span>c<span class="op">)</span> <span class="cf">then</span></a>
+<a class="sourceLine" id="cb6-33" title="33">                a<span class="op">[</span>n<span class="op">]</span> <span class="op">=</span> c</a>
+<a class="sourceLine" id="cb6-34" title="34">                addqueen<span class="op">(</span>a<span class="op">,</span> n<span class="op">+</span><span class="dv">1</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb6-35" title="35">            <span class="cf">end</span></a>
+<a class="sourceLine" id="cb6-36" title="36">        <span class="cf">end</span></a>
+<a class="sourceLine" id="cb6-37" title="37">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb6-38" title="38"><span class="cf">end</span></a></code></pre></div>
+<h1 id="chapter-3---numbers">Chapter 3 - Numbers</h1>
+<p>In Lua 5.3, we have both integers and doubles. Both are identified as <code>"number"</code> by <code>type()</code>, if more precission is needed, you can use</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb7-1" title="1"><span class="fu">math.type</span><span class="op">(</span>number<span class="op">)</span></a></code></pre></div>
+<p>Hexadecimal with <code>0x</code>, you can also have fractional part in this format. Exponents after <code>p</code> (With decimals, use <code>e</code>, as in scientific notation)</p>
+<p>Operators are as usual, but <code>//</code>, the integer division, can return doubles if any of its operands are doubles (Although the return value will have an integer value</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb8-1" title="1"><span class="op">&gt;</span> <span class="dv">3.0</span> <span class="op">//</span> <span class="dv">2</span> <span class="co">--&gt;  1.0</span></a></code></pre></div>
+<p>Also, the modulo operator for integers is defined by the equation</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb9-1" title="1">a <span class="op">%</span> b <span class="op">=</span> a <span class="op">-</span> <span class="op">((</span>a<span class="op">//</span>b<span class="op">)</span> <span class="op">*</span> b<span class="op">)</span></a></code></pre></div>
+<p>Therefore, <code>a%b</code> is always positive</p>
+<p>For doubles, the module operator is used to indicate precission</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb10-1" title="1"><span class="op">&gt;</span> <span class="va">math.pi</span><span class="op">%</span><span class="dv">0.01</span>   <span class="co">--&gt; 3.14</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="op">&gt;</span> <span class="va">math.pi</span><span class="op">%</span><span class="dv">0.001</span>  <span class="co">--&gt; 3.141</span></a></code></pre></div>
+<h5 id="math-library"><code>math</code> library</h5>
+<p>Cool functions you expected to be * <code>math.huge</code> returns <code>inf</code> * <code>math.max(a,b,c,d)</code><br />
+* <code>math.sin(a)</code></p>
+<p>Generating random values * <code>math.random()</code> return real in <span class="math inline">[0, 1)</span> * <code>math.random(n)</code> returns integer in <span class="math inline">[1, <em>n</em>]</span> * <code>math.random(l,u)</code> returns integer in <span class="math inline">[<em>l</em>, <em>u</em>]</span></p>
+<p>Rounding * <code>math.floor(d)</code> returns lowest * <code>math.ceil(d)</code> returns highest * <code>math.fmod(d)</code> returns closes to 0 (And as a second value, the difference / fractional part)</p>
+<p>Limits * <code>math.maxinteger</code> * <code>math.mininteger</code></p>
+<h5 id="conversions">Conversions</h5>
+<h6 id="integer-double"><code>integer</code> → <code>double</code></h6>
+<p>Just add <code>0.0</code></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb11-1" title="1"><span class="op">&gt;</span> <span class="op">-</span><span class="dv">3</span> <span class="op">+</span> <span class="dv">0.0</span> <span class="co">--&gt; -3.0</span></a></code></pre></div>
+<h6 id="double-integer"><code>double</code> → <code>integer</code></h6>
+<p>Do a biwise or with 0</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb12-1" title="1"><span class="op">&gt;</span> <span class="dv">2</span><span class="op">^</span><span class="dv">53</span> <span class="op">|</span> <span class="dv">0</span> <span class="co">--&gt; 9007199254740992</span></a></code></pre></div>
+<p>only works if there is no loss of information, if not, an error is raised.</p>
+<p>We can also use <code>math.tointeger(d)</code>. If integer can’t be represented, <code>nil</code> is returned</p>
+<h1 id="chapter-4---strings">Chapter 4 - Strings</h1>
+<p>In Lua, strings are sequences of bytes → Any piece of binary data can be saved as a string</p>
+<p>Get the length with <code>#</code></p>
+<p>Concatenate with <code>..</code></p>
+<p>Use either <code>"</code> or <code>'</code>, doesn’t matter</p>
+<h6 id="spcecial-character-sequences">Spcecial Character sequences</h6>
+<ul>
+<li><code>\a</code> Bell</li>
+<li><code>\b</code> Backspace</li>
+<li><code>\f</code> Form feed</li>
+<li><code>\n</code> New line</li>
+<li><code>\r</code> Carriage return (MacOS stuff)</li>
+<li><code>\t</code> Horizontal tab</li>
+<li><code>\v</code> Vertical tab</li>
+<li><code>\\</code> Escaping</li>
+<li><code>\"</code> Escaping</li>
+<li><code>\'</code> Escaping<br />
+</li>
+<li><code>\z</code> Ignore following <code>\n</code> (Useful in multiline strings)<br />
+Also, <code>\ddd</code> or <code>\xhh</code> specify characters by code, where <code>ddd</code> are decimal values and<code>hh</code> are hexadecimal ones<br />
+You can as well use <code>\u{h... h}</code> to write UTF-8 characters by code</li>
+</ul>
+<p>Declare long strings by using <code>[[</code> to start and <code>]]</code> to end. In case that there may be conflicts with the data inside the string and the ending sequence (There is a <code>]]</code> somewhere), we can use any number of <code>=</code> signs in between the <code>[</code> so it will only close when two <code>]</code> with the same number of <code>=</code> signs in between appear in the data.</p>
+<p>This is how multiline comments work, commenting a multiline string</p>
+<h6 id="string-to-number"><code>string</code> to <code>number</code></h6>
+<p>Use <code>tonumber("num")</code>, returns <code>nil</code> if not valid</p>
+<p><code>tonumber("num", base)</code> can accept a <code>base</code> argument, between 2 to 36, for conversion (Uses the alphabet until Z)</p>
+<h5 id="the-string-library">The <code>string</code> library</h5>
+<p>It has some pretty powerful stuff * <code>string.rep(string, times)</code> * <code>string.reverse(string)</code> * <code>string.lower(string)</code> * <code>string.upper(string)</code> * <code>string.sub(string, ini, fin)</code><br />
+Returns substring in <span class="math inline">[</span><code>ini</code><span class="math inline">,</span><code>fin</code><span class="math inline">]</span>. Indexes can be negative, count from the end like Python * <code>string.char(num1, ... numN)</code><br />
+Converts from <code>integer</code> to <code>char</code> the values given, and concatenates them into a string * <code>string.byte(string, idx1, ..., idxN)</code><br />
+Converts from <code>char</code> to <code>integer</code>. idx1 is 1 by default * <code>string.format(string, var1, ..., varN)</code> * <code>string.find(string, pattern)</code><br />
+Returns (ini, fin) of pattern, or <code>nil</code> if not found * <code>string.gsub(string, search, replace)</code><br />
+Performs all possible substitutions. Also returns the number of them after the modified string<br />
+<code>replace</code> can also be a function</p>
+<h4 id="the-utf8-library">The <code>utf8</code> library</h4>
+<p>Because 1 char $$ 1 byte, we have to take measures * <code>utf8.len(string)</code> * <code>utf8.char(num1, ... numN)</code> (See <code>string.char</code>) * <code>utf8.codepoint(string, idx1, ..., idx)</code> (See <code>string.byte</code>) * <code>utf8.offset(string, idx)</code><br />
+Converts a character position to its UTF-8 byte position * <code>utf8.codes(string)</code><br />
+Allows you to iterate over characters in UTF-8 strings<br />
+<code>lua     for i, c in utf8.codes("Açâo") do         print(i,c)     end</code></p>
+<h1 id="chapter-5---tables">Chapter 5 - Tables</h1>
+<p>These are objects (Are passed by reference). If there are no more references to the data table, the Garbage Collector removes the data</p>
+<p>Access elements with <code>t.x</code> or <code>t[k]</code>. <code>t.x</code> is equivalent to <code>t["x"]</code></p>
+<p>Tables are constructed with <code>{</code> and <code>}</code> * <code>{}</code> is an empty table * <code>{item1, item2, ..., itemN}</code> is a table with <code>t[1]</code> = <code>item1</code>, etc… * <code>{key1=val1, ...}</code> is a table with suck key-value pairs, where keys are strings * <code>{[expr]=val1,...}</code> lets us use any expression as a key</p>
+<p>Use the <code>#</code> operator to retrieve the length of a sequence of a table, where a sequence is an uninterrupted succession of values indexed from 1 to n.</p>
+<p>This is kind of finicky. Sometimes it may be better to store the length of a structure separately</p>
+<h3 id="list-traversal">List traversal</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb13-1" title="1"><span class="cf">for</span> key<span class="op">,</span> value <span class="kw">in</span> <span class="fu">pairs</span><span class="op">(</span>datatable<span class="op">)</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb13-2" title="2">    <span class="co">-- Code here</span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="cf">end</span></a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb14-1" title="1"><span class="cf">for</span> key<span class="op">,</span> value <span class="kw">in</span> <span class="fu">ipairs</span><span class="op">(</span>list<span class="op">)</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb14-2" title="2">    <span class="co">-- Code here</span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="cf">end</span></a></code></pre></div>
+<p>Prefer <code>ipairs</code> over <code>pairs</code> with sequences. <code>pairs</code> does not ensure any type of order</p>
+<h3 id="safe-navigation">Safe navigation</h3>
+<p>If you want to access a value inside of a table nested in more tables, we need to have a mechanism that ensures that such tables exists</p>
+<p>The following code could error if any of the intermediary tables does not exist, or if its names were misspelled</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb15-1" title="1"><span class="op">&gt;</span> <span class="fu">zip</span> <span class="op">=</span> company<span class="op">.</span>director<span class="op">.</span>address<span class="op">.</span>zipcode</a></code></pre></div>
+<p>To ensure we access the value safely with the minimum number of table queries, we can write it as such</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb16-1" title="1"><span class="op">&gt;</span> <span class="fu">zip</span> <span class="op">=</span> <span class="op">(((</span>company <span class="kw">or</span> <span class="op">{}).</span>director <span class="kw">or</span> <span class="op">{}).</span>address <span class="kw">or</span> <span class="op">{}).</span>zipcode</a></code></pre></div>
+<p>This is simiar to other languages features such as the <code>?</code> operator in C#, where the same is achieved as</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c#"><code class="sourceCode cs"><a class="sourceLine" id="cb17-1" title="1">&gt; zip = company?.<span class="fu">director</span>?.<span class="fu">address</span>?.<span class="fu">zipcode</span></a></code></pre></div>
+<h3 id="the-table-library">The <code>table</code> library</h3>
+<ul>
+<li><code>table.insert(table, [idx,] elem)</code><br />
+Inserts <code>elem</code> in table at the end (Or <code>idx</code> if specified)</li>
+<li><code>table.remove(table[, idx])</code><br />
+Returns and removes the last element (Or at <code>idx</code> if given)</li>
+<li><code>table.move(table, ini, end, idx[, otherTable])</code><br />
+Moves elements from <code>ini</code> to <code>end</code> to position <code>idx</code> in the same table (Or <code>otherTable</code> if specified)</li>
+</ul>
+<h1 id="chapter-6---functions">Chapter 6 - Functions</h1>
+<p>If function takes one parameter and it’s a literal string or table constructor, no parenthesis are needed</p>
+<p>Also, <code>o:foo()</code> translates to <code>o.foo(o)</code></p>
+<p>Syntax:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">function</span> name<span class="op">(</span>args<span class="op">)</span></a>
+<a class="sourceLine" id="cb18-2" title="2">    <span class="co">-- code here</span></a>
+<a class="sourceLine" id="cb18-3" title="3">    <span class="cf">return</span> val1<span class="op">,</span> val2 <span class="co">-- optional</span></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="cf">end</span></a></code></pre></div>
+<p>If a parameter isn’t provided, <code>nil</code> is asigned. If any extra parameters are asigned, they are discarded.</p>
+<p>Functions can return multiple values <strong>if they are the last element (or only) of an expresion list</strong>, using the <code>,</code> list syntax.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">function</span> foo<span class="op">()</span> <span class="cf">return</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span> <span class="cf">end</span></a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="op">&gt;</span> x<span class="op">,</span> y <span class="op">=</span> foo<span class="op">()</span>      <span class="co">-- x = 1, y = 2</span></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="op">&gt;</span> x<span class="op">,</span> y <span class="op">=</span> foo<span class="op">(),</span> <span class="dv">1</span> <span class="co">-- x = 1, y = 1</span></a></code></pre></div>
+<p>The <code>,</code> lists only appear in: * Multiple assignments <code>lua      i,e = string.find("hello", "ll")</code> * Arguments to function calls <code>lua      string.char(1, 2, 3, 4)</code> * Table constructors <code>lua      t = {1, 2, 3, 4}</code> * <code>return</code> statements <code>lua      return 1, 2, 3, 4</code> You can make functions take an arbitrary number of arguments. <strong>Extra</strong> arguments are represented with <code>...</code></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">function</span> fwrite <span class="op">(</span>fmt<span class="op">,</span> <span class="op">...)</span></a>
+<a class="sourceLine" id="cb20-2" title="2">    <span class="cf">return</span> <span class="fu">io.write</span><span class="op">(</span><span class="fu">string.format</span><span class="op">(</span>fmt<span class="op">,</span> <span class="op">...))</span></a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="cf">end</span></a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">function</span> <span class="op">(</span>a<span class="op">,</span>b<span class="op">,</span>c<span class="op">)</span></a>
+<a class="sourceLine" id="cb21-2" title="2">    <span class="co">--- Code here</span></a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb21-4" title="4"><span class="co">-- EQUIVALENT</span></a>
+<a class="sourceLine" id="cb21-5" title="5"><span class="kw">function</span> <span class="op">(...)</span></a>
+<a class="sourceLine" id="cb21-6" title="6">    <span class="kw">local</span> a<span class="op">,</span> b<span class="op">,</span> c <span class="op">=</span> <span class="op">...</span></a>
+<a class="sourceLine" id="cb21-7" title="7">    <span class="co">--- Code here</span></a>
+<a class="sourceLine" id="cb21-8" title="8"><span class="cf">end</span></a></code></pre></div>
+<p>Use <code>{...}</code> to treat arguments as if they were a table. You can also use <code>table.pack(...)</code> for that purpose, and it will also generate a key <code>n</code> with the number of arguments<br />
+<em>This can be useful when there may be trailing <code>nil</code>s, but you want the number of arguments provided explicitely to still be recorded</em></p>
+<p><code>select(n, ...)</code> returns the elements from n to the end of the “sequence”, if n is a number, or if <code>n="#"</code>, the number of elements of the “sequence” is provided.</p>
+<p><code>table.unpack(list)</code> takes all the values from a list and returns them. Equivalent to <code>...obj</code> in JavaScript. It also accepts extra parameters. <code>table.unpack(list, ini, fin)</code>, where it only includes the elements in <span class="math inline">[</span><code>ini</code><span class="math inline">,</span><code>fin</code><span class="math inline">]</span> in the return call (By default, returns all)</p>
+<h3 id="proper-tail-calls">Proper tail calls</h3>
+<p>Lua has tail-call elimination. This means that, if we are in the following situation</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">function</span> f <span class="op">(</span>x<span class="op">)</span></a>
+<a class="sourceLine" id="cb22-2" title="2">    x <span class="op">=</span> x <span class="op">+</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb22-3" title="3">    retur g<span class="op">(</span>x<span class="op">)</span></a>
+<a class="sourceLine" id="cb22-4" title="4"><span class="cf">end</span></a></code></pre></div>
+<p>Lua recognizes that <code>f</code> doesn’t have to wait for <code>g</code> to return, and liberates such space from the stack, making functions such as</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">function</span> f <span class="op">(</span>n<span class="op">)</span></a>
+<a class="sourceLine" id="cb23-2" title="2">    <span class="cf">if</span> n <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">then</span> <span class="cf">return</span> f<span class="op">(</span>n<span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="cf">end</span></a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="cf">end</span></a></code></pre></div>
+<p>never overflow the stack.</p>
+<p>Tail-call elimination only happens if the function itself ends with a return statement of the syntax:<br />
+<em><code>return function(args)</code></em></p>
+<h4 id="exercises">Exercises?</h4>
+<h1 id="chapter-7---the-external-world">Chapter 7 - The external world</h1>
+<h2 id="simple-io-model">Simple IO model</h2>
+<p>Choose where to read from with <code>io.input</code>, where to write to with <code>io.outpt</code><br />
+For example</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb24-1" title="1"><span class="op">&gt;</span> <span class="fu">io.output</span><span class="op">(</span><span class="st">&quot;data.txt&quot;</span><span class="op">)</span></a></code></pre></div>
+<p>Write data with <code>io.write()</code>. This is recomended over <code>print</code>, it gives you more control. Also, avoid concatenation, splitting into multiple arguments is shorter and faster to execute.</p>
+<p><code>io.read(op)</code> is used to read. <code>op</code> is a string which decides what and how to read: * <code>"a"</code> reads the whole file, <code>""</code> if it’s empty * <code>"l"</code> reads the next line (dropping the newline), <code>nil</code> if there isn’t * <code>"L"</code> reads the next line (keeping the newline), <code>nil</code> if there isn’t * <code>"n"</code> reads a number, <code>nil</code> if there isn’t * <em><code>number</code></em> reads <code>number</code> characters as a string, <code>nil</code> if there isn’t any more characters<br />
+<code>io.read(0)</code> can serve as a <code>EOF</code> check. <code>nil</code> if <code>EOF</code>, <code>""</code> if not (which is <em>truthy</em>)</p>
+<h2 id="complete-io-model">Complete IO model</h2>
+<p>To open a file, we use <code>io.open(filename, mode)</code> where <code>mode</code> can be: * <code>r</code> for read * <code>w</code> for write (Overwrites) * <code>a``for append *</code>b` for binary files</p>
+<p><code>io.open</code> returns a stream if successful, <code>nil</code> if not.<br />
+An useful idiom communly used when working with files is:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb25-1" title="1"><span class="kw">local</span> f <span class="op">=</span> <span class="fu">assert</span><span class="op">(</span><span class="fu">io.open</span><span class="op">(</span>filnae<span class="op">,</span> mode<span class="op">))</span></a></code></pre></div>
+<p>After this, we use the <code>write</code> and <code>read</code> functions as methods, which means we use the <code>:</code> operator</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb26-1" title="1">f<span class="op">:</span><span class="fu">write</span><span class="op">(</span> f<span class="op">:</span><span class="fu">read</span><span class="op">(</span><span class="st">&quot;l&quot;</span><span class="op">)</span> <span class="op">)</span></a>
+<a class="sourceLine" id="cb26-2" title="2">f<span class="op">:</span><span class="fu">close</span><span class="op">()</span></a></code></pre></div>
+<p>Don’t forget to close a stream when you don’t need it anymore</p>
+<p>We can also use the predefined streams of <code>stderr</code>, <code>stdin</code> and <code>stdout</code>.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb27-1" title="1"><span class="fu">io.stderr</span><span class="op">:</span><span class="fu">write</span><span class="op">(</span>message<span class="op">)</span></a></code></pre></div>
+<p><code>io.read()</code> with no arguments returns the current stream</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb28-1" title="1"><span class="kw">local</span> temp <span class="op">=</span> <span class="fu">io.input</span><span class="op">()</span></a>
+<a class="sourceLine" id="cb28-2" title="2"><span class="fu">io.input</span><span class="op">(</span>handle<span class="op">)</span></a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="co">-- Code here</span></a>
+<a class="sourceLine" id="cb28-4" title="4"><span class="fu">io.input</span><span class="op">():</span><span class="fu">close</span><span class="op">()</span></a>
+<a class="sourceLine" id="cb28-5" title="5"><span class="fu">io.input</span><span class="op">(</span>temp<span class="op">)</span></a></code></pre></div>
+<p>We can also use <code>io.lines</code> to read from a stream. This gives an iterator that continuously reads from a stream until the end of file. <code>lines</code> can also be used as a method, and accepts arguments like <code>read</code> does.</p>
+<p>The following code copies the current input to the current output over blocks of 8 KB</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb29-1" title="1"><span class="cf">for</span> bloc <span class="kw">in</span> <span class="fu">io.input</span><span class="op">():</span><span class="fu">lines</span><span class="op">(</span><span class="dv">2</span><span class="op">^</span><span class="dv">13</span><span class="op">)</span> <span class="cf">do</span> <span class="co">-- 2^13 = 8 KB</span></a>
+<a class="sourceLine" id="cb29-2" title="2">    <span class="fu">io.write</span><span class="op">(</span>block<span class="op">)</span></a>
+<a class="sourceLine" id="cb29-3" title="3"><span class="cf">end</span></a></code></pre></div>
+<h3 id="other-operations">Other operations</h3>
+<ul>
+<li><p><code>io.tmpfile()</code> creates a temporary file that is removed when the program ends</p></li>
+<li><p><code>io.flush()</code> executes all pending writes to a file. It can also be called as a method</p></li>
+<li><p><code>handle:setvbuf(op)</code> is a method that sets the buffering mode of the stream<br />
+<code>"no"</code> means no buffering<br />
+<code>"full"</code> written when the buffer is full. Accepts second option with buffer size<br />
+<code>"line"</code> buffered until a newline. Accepts second option with buffer size</p></li>
+<li><p><code>handle:seek(whence, offset)</code> gets and sets the current position of a stream in a file<br />
+<code>"set"</code> for offsets relative to the beginning of a file<br />
+<code>"cur"</code> for offsets relative to the current position<br />
+<code>"end"</code> for offsets relative to the end of a file<br />
+Always returns the 0 position (<code>"set"</code> → 1, <code>"cur"</code> → position, <code>"end"</code> → file-size)</p></li>
+<li><code>os.rename(old, new)</code> renames a file</li>
+<li><p><code>os.remove(file)</code> removes a file</p></li>
+</ul>
+<h3 id="other-system-calls">Other system calls</h3>
+<ul>
+<li><code>os.exit(code, liberateMemory)</code> exits the program (Default code is <code>0</code> or <code>true</code> for “no problems”)</li>
+<li><code>os.getenv(varName)</code> returns the value of an environment variable (Or <code>nil</code> if not found)</li>
+</ul>
+<h3 id="executing-system-commands">Executing system commands</h3>
+<ul>
+<li><code>os.execute(command)"</code> executes the given command. Returns 3 values:
+<ul>
+<li>A boolean that says whether the program exited with any errors</li>
+<li>A string (<code>"exit"</code> if exited normally, <code>"signal"</code> if interrupted by a signal)</li>
+<li>A return status (if <code>"exit"</code>) or the number of the signal that terminated the program</li>
+</ul></li>
+<li><code>os.popen(command, mode)</code> executes a command and also connects the output (or input) to a new stream and returns it. <code>mode</code> decides whether it’s input (<code>"r"</code>) or output (<code>"w"</code>).</li>
+</ul>
+<p>These are highly dependant on Operating System, for something more multi-platform, other libraries like <em>LuaFileSystem</em> or <em>luaposix</em> are recommended.</p>
+<h1 id="chapter-8---filling-some-gaps">Chapter 8 - Filling some gaps</h1>
+<p>By default, variables are global. Make local with <code>local</code>. In interactive mode, as every line is a chunk, local variables are destroyed the moment they are run</p>
+<p>If you need more granular control over blocks of code, the <code>do</code> block represents a different scope</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb30-1" title="1"><span class="cf">do</span></a>
+<a class="sourceLine" id="cb30-2" title="2">    <span class="kw">local</span> a2 <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> a</a>
+<a class="sourceLine" id="cb30-3" title="3">    <span class="kw">local</span> d <span class="op">=</span> <span class="op">(</span>b<span class="op">^</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">4</span><span class="op">+</span>a<span class="op">*</span>c<span class="op">)^</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb30-4" title="4">    x1 <span class="op">=</span> <span class="op">(-</span>b <span class="op">+</span> <span class="dv">2</span><span class="op">)/</span>a2</a>
+<a class="sourceLine" id="cb30-5" title="5">    x2 <span class="op">=</span> <span class="op">(-</span>b <span class="op">-</span> <span class="dv">2</span><span class="op">)/</span>a2</a>
+<a class="sourceLine" id="cb30-6" title="6"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb30-7" title="7"><span class="fu">print</span><span class="op">(</span>x1<span class="op">,</span> x2<span class="op">)</span></a></code></pre></div>
+<p>Idiom to make a global variable behave as a local for a piece of code</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">local</span> foo <span class="op">=</span> foo</a></code></pre></div>
+<p>In a loop, the scope of a local variable declared in a loop includes the condition</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb32-1" title="1"><span class="cf">repeat</span></a>
+<a class="sourceLine" id="cb32-2" title="2">    sqr <span class="op">=</span> <span class="op">(</span>sqr <span class="op">+</span> x<span class="op">/</span>sqr<span class="op">)/</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb32-3" title="3">    <span class="kw">local</span> <span class="fu">error</span> <span class="op">=</span> <span class="fu">math.abs</span><span class="op">(</span>sqr<span class="op">^</span><span class="dv">2</span> <span class="op">-</span> x<span class="op">)</span></a>
+<a class="sourceLine" id="cb32-4" title="4"><span class="cf">until</span> <span class="fu">error</span> <span class="op">&lt;</span> x<span class="op">/</span><span class="dv">1e3</span></a></code></pre></div>
+<h3 id="goto"><code>goto</code></h3>
+<p>Use <code>goto label</code> to go to that part of code. labels in code must follow the syntax <code>::name::</code>. <code>goto</code>s are powerful tools that can easily make your code hard to read. You can’t jump out of a function. You can’t jump into the scope of a local variable (A point where a local variable wasn’t initialized but is used)</p>
+<p>It’s useful when you want to replicate some features not present in Lua like:</p>
+<ul>
+<li>continue</li>
+<li>multi-level break</li>
+<li>multi-level continue</li>
+<li>redo</li>
+<li>local error handling</li>
+</ul>
+<p>For example:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb33-1" title="1"><span class="cf">while</span> some_condition <span class="cf">do</span></a>
+<a class="sourceLine" id="cb33-2" title="2">    <span class="op">::</span>redo<span class="op">::</span></a>
+<a class="sourceLine" id="cb33-3" title="3">    <span class="cf">if</span> some_other_condition <span class="cf">then</span></a>
+<a class="sourceLine" id="cb33-4" title="4">        <span class="cf">goto</span> continue</a>
+<a class="sourceLine" id="cb33-5" title="5">    <span class="cf">else</span></a>
+<a class="sourceLine" id="cb33-6" title="6">        <span class="cf">if</span> yet_another_condition <span class="cf">then</span></a>
+<a class="sourceLine" id="cb33-7" title="7">            <span class="cf">goto</span> redo    </a>
+<a class="sourceLine" id="cb33-8" title="8">        <span class="cf">end</span></a>
+<a class="sourceLine" id="cb33-9" title="9">        <span class="co">-- Code here</span></a>
+<a class="sourceLine" id="cb33-10" title="10">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb33-11" title="11">    <span class="op">::</span>continue<span class="op">::</span></a>
+<a class="sourceLine" id="cb33-12" title="12"><span class="cf">end</span></a></code></pre></div>
+<p>More than this is not advisable</p>
+<h3 id="example-maze-game">Example: Maze game</h3>
+<div class="sourceCode" id="cb34"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb34-1" title="1"><span class="cf">goto</span> room1 <span class="co">-- initial room</span></a>
+<a class="sourceLine" id="cb34-2" title="2"></a>
+<a class="sourceLine" id="cb34-3" title="3"><span class="op">::</span>room1<span class="op">::</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb34-4" title="4">    <span class="kw">local</span> <span class="fu">move</span> <span class="op">=</span> <span class="fu">io.read</span><span class="op">()</span></a>
+<a class="sourceLine" id="cb34-5" title="5">    <span class="cf">if</span> <span class="fu">move</span> <span class="op">==</span> <span class="st">&quot;south&quot;</span> <span class="cf">then</span> <span class="cf">goto</span> room3</a>
+<a class="sourceLine" id="cb34-6" title="6">    <span class="cf">elseif</span> <span class="fu">move</span> <span class="op">==</span> <span class="st">&quot;east&quot;</span> <span class="cf">then</span> <span class="cf">goto</span> room2</a>
+<a class="sourceLine" id="cb34-7" title="7">    <span class="cf">else</span></a>
+<a class="sourceLine" id="cb34-8" title="8">        <span class="fu">print</span><span class="op">(</span><span class="st">&quot;invalid move&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb34-9" title="9">        <span class="cf">goto</span> room1 <span class="co">-- stay in the same room</span></a>
+<a class="sourceLine" id="cb34-10" title="10">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb34-11" title="11"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb34-12" title="12"></a>
+<a class="sourceLine" id="cb34-13" title="13"><span class="op">::</span>room2<span class="op">::</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb34-14" title="14">    <span class="kw">local</span> <span class="fu">move</span> <span class="op">=</span> <span class="fu">io.read</span><span class="op">()</span></a>
+<a class="sourceLine" id="cb34-15" title="15">    <span class="cf">if</span> <span class="fu">move</span> <span class="op">==</span> <span class="st">&quot;south&quot;</span> <span class="cf">then</span> <span class="cf">goto</span> room4</a>
+<a class="sourceLine" id="cb34-16" title="16">    <span class="cf">elseif</span> <span class="fu">move</span> <span class="op">==</span> <span class="st">&quot;west&quot;</span> <span class="cf">then</span> <span class="cf">goto</span> room1</a>
+<a class="sourceLine" id="cb34-17" title="17">    <span class="cf">else</span></a>
+<a class="sourceLine" id="cb34-18" title="18">        <span class="fu">print</span><span class="op">(</span><span class="st">&quot;invalid move&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb34-19" title="19">        <span class="cf">goto</span> room2 <span class="co">-- stay in the same room</span></a>
+<a class="sourceLine" id="cb34-20" title="20">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb34-21" title="21"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb34-22" title="22"></a>
+<a class="sourceLine" id="cb34-23" title="23"><span class="op">::</span>room3<span class="op">::</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb34-24" title="24">    <span class="kw">local</span> <span class="fu">move</span> <span class="op">=</span> <span class="fu">io.read</span><span class="op">()</span></a>
+<a class="sourceLine" id="cb34-25" title="25">    <span class="cf">if</span> <span class="fu">move</span> <span class="op">==</span> <span class="st">&quot;north&quot;</span> <span class="cf">then</span> <span class="cf">goto</span> room1</a>
+<a class="sourceLine" id="cb34-26" title="26">    <span class="cf">elseif</span> <span class="fu">move</span> <span class="op">==</span> <span class="st">&quot;east&quot;</span> <span class="cf">then</span> <span class="cf">goto</span> room4</a>
+<a class="sourceLine" id="cb34-27" title="27">    <span class="cf">else</span></a>
+<a class="sourceLine" id="cb34-28" title="28">        <span class="fu">print</span><span class="op">(</span><span class="st">&quot;invalid move&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb34-29" title="29">        <span class="cf">goto</span> room3 <span class="co">-- stay in the same room</span></a>
+<a class="sourceLine" id="cb34-30" title="30">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb34-31" title="31"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb34-32" title="32"></a>
+<a class="sourceLine" id="cb34-33" title="33"><span class="op">::</span>room4<span class="op">::</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb34-34" title="34">    <span class="fu">print</span><span class="op">(</span><span class="st">&quot;Congratulations, you won&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb34-35" title="35"><span class="cf">end</span></a></code></pre></div>
+<p>This is horrible code design, but works.</p>
+<hr />
+<h1 id="chapter-9---closures">Chapter 9 - Closures</h1>
+<p>In Lua, functions are first-class values.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb35-1" title="1">a <span class="op">=</span> <span class="op">{</span>p <span class="op">=</span> <span class="fu">print</span><span class="op">}</span> </a>
+<a class="sourceLine" id="cb35-2" title="2">a<span class="op">.</span>p<span class="op">(</span><span class="st">&quot;Hello world&quot;</span><span class="op">)</span>  <span class="co">--&gt; print(&quot;Hello world&quot;)</span></a>
+<a class="sourceLine" id="cb35-3" title="3"></a>
+<a class="sourceLine" id="cb35-4" title="4"><span class="fu">print</span> <span class="op">=</span> <span class="fu">math.sin</span></a>
+<a class="sourceLine" id="cb35-5" title="5">a<span class="op">.</span>p<span class="op">(</span><span class="fu">print</span><span class="op">(</span><span class="dv">1</span><span class="op">))</span>       <span class="co">--&gt; print(math.sin(1))</span></a>
+<a class="sourceLine" id="cb35-6" title="6"></a>
+<a class="sourceLine" id="cb35-7" title="7"><span class="fu">math.sin</span> <span class="op">=</span> a<span class="op">.</span>p</a>
+<a class="sourceLine" id="cb35-8" title="8"><span class="fu">math.sin</span><span class="op">(</span><span class="dv">10</span><span class="op">,</span> <span class="dv">20</span><span class="op">)</span>    <span class="co">--&gt; print(10, 20)</span></a></code></pre></div>
+<p>Actually, these two are equivalent:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb36-1" title="1">funtion foo<span class="op">(</span>x<span class="op">)</span> <span class="cf">then</span></a>
+<a class="sourceLine" id="cb36-2" title="2">    <span class="cf">return</span> <span class="dv">2</span><span class="op">*</span>x</a>
+<a class="sourceLine" id="cb36-3" title="3"><span class="cf">end</span></a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb37-1" title="1">foo <span class="op">=</span> funtion<span class="op">(</span>x<span class="op">)</span> <span class="cf">then</span></a>
+<a class="sourceLine" id="cb37-2" title="2">    <span class="cf">return</span> <span class="dv">2</span><span class="op">*</span>x</a>
+<a class="sourceLine" id="cb37-3" title="3"><span class="cf">end</span></a></code></pre></div>
+<p>We call <code>function(args) body end</code> the function constructor</p>
+<p>Anonymous functions are used in <code>table.sort(table, orderFunction)</code>. Functions that handle functions as arguments or return types are called high-order functions.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb38-1" title="1"><span class="kw">function</span> derivative<span class="op">(</span>f<span class="op">,</span> eps<span class="op">)</span></a>
+<a class="sourceLine" id="cb38-2" title="2">    eps <span class="op">=</span> eps <span class="kw">or</span> <span class="dv">1e-4</span></a>
+<a class="sourceLine" id="cb38-3" title="3">    <span class="cf">return</span> <span class="kw">function</span><span class="op">(</span>x<span class="op">)</span> </a>
+<a class="sourceLine" id="cb38-4" title="4">        <span class="cf">return</span> <span class="op">(</span>f<span class="op">(</span>x <span class="op">+</span> eps<span class="op">)</span> <span class="op">-</span> f<span class="op">(</span>x<span class="op">))</span> <span class="op">/</span> eps</a>
+<a class="sourceLine" id="cb38-5" title="5">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb38-6" title="6"><span class="cf">end</span></a></code></pre></div>
+<p>A local function can have the syntactic sugar:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb39-1" title="1"><span class="kw">local</span> <span class="kw">function</span> f <span class="op">(</span>params<span class="op">)</span></a>
+<a class="sourceLine" id="cb39-2" title="2">    <span class="co">-- Code here</span></a>
+<a class="sourceLine" id="cb39-3" title="3"><span class="cf">end</span></a></code></pre></div>
+<p>This expands to</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb40-1" title="1"><span class="kw">local</span> f<span class="op">;</span></a>
+<a class="sourceLine" id="cb40-2" title="2">f <span class="op">=</span> <span class="kw">function</span> <span class="op">(</span>params<span class="op">)</span></a>
+<a class="sourceLine" id="cb40-3" title="3">    <span class="co">-- Code here</span></a>
+<a class="sourceLine" id="cb40-4" title="4"><span class="cf">end</span></a></code></pre></div>
+<p>The declaration of the variable is done before initialization to prevent problems with recursive functions.</p>
+<p><strong>Upvalues</strong> or <strong>non-local variables</strong> are variables used inside a function constructor but defined elsewhere</p>
+<p>A closure is a function and all the code it needs to access non-local variables correctly</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb41-1" title="1"><span class="kw">function</span> newCounter<span class="op">()</span></a>
+<a class="sourceLine" id="cb41-2" title="2">    <span class="kw">local</span> counter <span class="op">=</span> <span class="dv">0</span> <span class="co">-- Part of the closure of the returned fucntion</span></a>
+<a class="sourceLine" id="cb41-3" title="3">    <span class="cf">return</span> <span class="kw">function</span> <span class="op">()</span></a>
+<a class="sourceLine" id="cb41-4" title="4">        counter <span class="op">=</span> counter <span class="op">+</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb41-5" title="5">        <span class="cf">return</span> counter</a>
+<a class="sourceLine" id="cb41-6" title="6">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb41-7" title="7"><span class="cf">end</span></a></code></pre></div>
+<p>Technically, <strong>closures</strong> are what’s a value in Lua, not functions. Functions are just a prototype for closures, but theirs terms are often used this way.</p>
+<p>This can be useful when redefining standard functions</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb42-1" title="1"><span class="cf">do</span> <span class="co">-- So oldSin is not visible elsewhere</span></a>
+<a class="sourceLine" id="cb42-2" title="2">    <span class="kw">local</span> oldSin <span class="op">=</span> <span class="fu">math.sin</span></a>
+<a class="sourceLine" id="cb42-3" title="3">    <span class="kw">local</span> k <span class="op">=</span> <span class="va">math.pi</span> <span class="op">/</span> <span class="dv">180</span></a>
+<a class="sourceLine" id="cb42-4" title="4">    <span class="fu">math.sin</span> <span class="op">=</span> <span class="kw">function</span> <span class="op">(</span>x<span class="op">)</span></a>
+<a class="sourceLine" id="cb42-5" title="5">        <span class="cf">return</span> oldSin<span class="op">(</span>x <span class="op">*</span> k</a>
+<a class="sourceLine" id="cb42-6" title="6">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb42-7" title="7"><span class="cf">end</span></a></code></pre></div>
+<p>We can use the same technique to create secure environments (sandboxes)</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb43-1" title="1"><span class="cf">do</span></a>
+<a class="sourceLine" id="cb43-2" title="2">    <span class="kw">local</span> oldOpen <span class="op">=</span> <span class="fu">io.open</span></a>
+<a class="sourceLine" id="cb43-3" title="3">    <span class="kw">local</span> acces_ok <span class="op">=</span> <span class="kw">function</span> <span class="op">(</span>filename<span class="op">,</span> mode<span class="op">)</span></a>
+<a class="sourceLine" id="cb43-4" title="4">        <span class="co">-- Check access here</span></a>
+<a class="sourceLine" id="cb43-5" title="5">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb43-6" title="6"></a>
+<a class="sourceLine" id="cb43-7" title="7">    <span class="fu">io.open</span> <span class="op">=</span> <span class="kw">function</span> <span class="op">(</span>filename<span class="op">,</span> mode<span class="op">)</span></a>
+<a class="sourceLine" id="cb43-8" title="8">        <span class="cf">if</span> access_ok<span class="op">(</span>filename<span class="op">,</span> mode<span class="op">)</span> <span class="cf">then</span></a>
+<a class="sourceLine" id="cb43-9" title="9">            <span class="cf">return</span> oldOpen<span class="op">(</span>filename<span class="op">,</span> mode<span class="op">)</span></a>
+<a class="sourceLine" id="cb43-10" title="10">        <span class="cf">else</span></a>
+<a class="sourceLine" id="cb43-11" title="11">            <span class="cf">return</span> <span class="kw">nil</span><span class="op">,</span> <span class="st">&quot;access denied&quot;</span></a>
+<a class="sourceLine" id="cb43-12" title="12">        <span class="cf">end</span></a>
+<a class="sourceLine" id="cb43-13" title="13">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb43-14" title="14"><span class="cf">end</span></a></code></pre></div>
+<h2 id="a-taste-of-functional-programming">A taste of functional programming</h2>
+<p>We are going to implement a simple system for geometric regions, where a region is a set of points.</p>
+<p>We represent these regions by their characteristic functions (Instead of perhaps objects)</p>
+<p>This for example represents a disk with center (1,3) and radius 4.5</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb44-1" title="1"><span class="kw">function</span> disk1<span class="op">(</span>x<span class="op">,</span> y<span class="op">)</span></a>
+<a class="sourceLine" id="cb44-2" title="2">    <span class="cf">return</span> <span class="op">(</span>x<span class="op">-</span><span class="dv">1.0</span><span class="op">)^</span><span class="dv">2</span> <span class="op">+</span> <span class="op">(</span>y<span class="op">-</span><span class="dv">3.0</span><span class="op">)^</span><span class="dv">2</span> <span class="op">&lt;=</span> <span class="dv">4.5</span><span class="op">^</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb44-3" title="3"><span class="cf">end</span></a></code></pre></div>
+<p>We can now define a disk factory</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb45-1" title="1"><span class="kw">function</span> disk<span class="op">(</span>cx<span class="op">,</span> cy<span class="op">,</span> r<span class="op">)</span></a>
+<a class="sourceLine" id="cb45-2" title="2">    <span class="cf">return</span> <span class="kw">function</span><span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span></a>
+<a class="sourceLine" id="cb45-3" title="3">        <span class="cf">return</span> <span class="op">(</span>x<span class="op">-</span>cx<span class="op">)^</span><span class="dv">2</span> <span class="op">+</span> <span class="op">(</span>y<span class="op">-</span>cy<span class="op">)^</span><span class="dv">2</span> <span class="op">&lt;=</span> r<span class="op">^</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb45-4" title="4">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb45-5" title="5"><span class="cf">end</span></a></code></pre></div>
+<p>Or an axis-aligned rectangle factory</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb46-1" title="1"><span class="kw">function</span> rect<span class="op">(</span>left<span class="op">,</span> right<span class="op">,</span> bottom<span class="op">,</span> up<span class="op">)</span></a>
+<a class="sourceLine" id="cb46-2" title="2">    <span class="cf">return</span> <span class="kw">function</span><span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span></a>
+<a class="sourceLine" id="cb46-3" title="3">        <span class="cf">return</span> left <span class="op">&lt;=</span> x <span class="kw">and</span> x <span class="op">&lt;=</span> rigth <span class="kw">and</span></a>
+<a class="sourceLine" id="cb46-4" title="4">            bottom <span class="op">&lt;=</span> y <span class="kw">and</span> y <span class="op">&lt;=</span> up</a>
+<a class="sourceLine" id="cb46-5" title="5">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb46-6" title="6"><span class="cf">end</span></a></code></pre></div>
+<p>We can now define functions to modify and combine regions</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb47-1" title="1"><span class="kw">function</span> complement<span class="op">(</span>r<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-2" title="2">    <span class="cf">return</span> <span class="kw">function</span><span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-3" title="3">        <span class="cf">return</span> <span class="kw">not</span> r<span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-4" title="4">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb47-5" title="5"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb47-6" title="6"></a>
+<a class="sourceLine" id="cb47-7" title="7"><span class="kw">function</span> union<span class="op">(</span>r1<span class="op">,</span>r2<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-8" title="8">    <span class="cf">return</span> <span class="kw">function</span><span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-9" title="9">        <span class="cf">return</span> r1<span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span> <span class="kw">or</span> r2<span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-10" title="10">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb47-11" title="11"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb47-12" title="12"></a>
+<a class="sourceLine" id="cb47-13" title="13"><span class="kw">function</span> intersection<span class="op">(</span>r1<span class="op">,</span>r2<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-14" title="14">    <span class="cf">return</span> <span class="kw">function</span><span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-15" title="15">        <span class="cf">return</span> r1<span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span> <span class="kw">and</span> r2<span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-16" title="16">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb47-17" title="17"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb47-18" title="18"></a>
+<a class="sourceLine" id="cb47-19" title="19"><span class="kw">function</span> difference<span class="op">(</span>r1<span class="op">,</span>r2<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-20" title="20">    <span class="cf">return</span> <span class="kw">function</span><span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-21" title="21">        <span class="cf">return</span> r1<span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span> <span class="kw">and</span> <span class="kw">not</span> r2<span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-22" title="22">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb47-23" title="23"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb47-24" title="24"></a>
+<a class="sourceLine" id="cb47-25" title="25"></a>
+<a class="sourceLine" id="cb47-26" title="26"><span class="kw">function</span> translate<span class="op">(</span>r<span class="op">,</span>dx<span class="op">,</span> dy<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-27" title="27">    <span class="cf">return</span> <span class="kw">function</span><span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span></a>
+<a class="sourceLine" id="cb47-28" title="28">        <span class="cf">return</span> r<span class="op">(</span>x<span class="op">-</span>dx<span class="op">,</span>y<span class="op">-</span>dy<span class="op">)</span> </a>
+<a class="sourceLine" id="cb47-29" title="29">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb47-30" title="30"><span class="cf">end</span></a></code></pre></div>
+<p>To visualize a region, we can just test each pixel with the figures characteristic function. For example, a PBM file is a file where after a “P1” header, you can set the matrix of “on” or “off” pixels to be displayed. It’s horribly inefficient, but pretty simple. This function would output a region in space as a PBM file</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb48-1" title="1"><span class="kw">function</span> plot<span class="op">(</span>r<span class="op">,</span> <span class="cn">H</span><span class="op">,</span> <span class="cn">W</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb48-2" title="2">    <span class="fu">io.write</span><span class="op">(</span><span class="st">&quot;P1</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span><span class="cn">H</span><span class="op">,</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span><span class="cn">W</span><span class="op">,</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">)</span>      <span class="co">-- header</span></a>
+<a class="sourceLine" id="cb48-3" title="3">    <span class="cf">for</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> <span class="cn">W</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb48-4" title="4">        <span class="kw">local</span> y <span class="op">=</span> <span class="op">(</span><span class="cn">W</span> <span class="op">-</span> i<span class="op">*</span><span class="dv">2</span><span class="op">)/</span><span class="cn">W</span></a>
+<a class="sourceLine" id="cb48-5" title="5">        <span class="cf">for</span> j <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> <span class="cn">M</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb48-6" title="6">            <span class="kw">local</span> x <span class="op">=</span> <span class="op">(</span>j<span class="op">*</span><span class="dv">2</span> <span class="op">-</span> <span class="cn">H</span><span class="op">)/</span><span class="cn">H</span></a>
+<a class="sourceLine" id="cb48-7" title="7">            <span class="fu">io.write</span><span class="op">(</span>r<span class="op">(</span>x<span class="op">,</span>y<span class="op">)</span> <span class="kw">and</span> <span class="st">&quot;1&quot;</span> <span class="kw">or</span> <span class="st">&quot;0&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb48-8" title="8">        <span class="cf">end</span></a>
+<a class="sourceLine" id="cb48-9" title="9">        <span class="fu">io.write</span><span class="op">(</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb48-10" title="10">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb48-11" title="11"><span class="cf">end</span></a></code></pre></div>
+<p>And the following would plot a crescent moon</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb49-1" title="1">c <span class="op">=</span> disk<span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb49-2" title="2">plot<span class="op">(</span>difference<span class="op">(</span>c1<span class="op">,</span> translate<span class="op">(</span>c1<span class="op">,</span><span class="dv">0.3</span><span class="op">,</span><span class="dv">0</span><span class="op">)),</span> <span class="dv">500</span><span class="op">,</span> <span class="dv">500</span><span class="op">)</span></a></code></pre></div>
+<h1 id="chapter-10---pattern-matching">Chapter 10 - Pattern matching</h1>
+<h2 id="pattern-matching-functions">Pattern-matching functions</h2>
+<h3 id="string.find"><code>string.find</code></h3>
+<p>Syntax: <code>string.find(string, pattern[, from, doSimple])</code><br />
+<strong>Returns</strong> the indexes of the substring that matched or <code>nil</code> if not found</p>
+<p><code>from</code> is the index from where to start the search</p>
+<p><code>doSimple</code> means that the literal string of <code>pattern</code> is searched in <code>string</code></p>
+<h3 id="string.gsub"><code>string.gsub</code></h3>
+<p>Syntax: <code>string.gsub(string, pattern, replace[, num])</code><br />
+<strong>Returns</strong> a version of <code>string</code> where every substring that matches <code>pattern</code> is substituted by <code>replace</code></p>
+<p><code>num</code> is the number of times to make the substitution</p>
+<p><code>replace</code> can also be a function that takes the capture groups <em>(Read ahead)</em> and returns the replacement <code>replace</code> can also be a table which if the first capture group is a key of, it’s value is the replacement. If it not, no replacement is done, instead of substituting for <code>nil</code></p>
+<h3 id="string.match"><code>string.match</code></h3>
+<p>Syntax: <code>string.match(string, pattern)</code><br />
+<strong>Returns</strong> the substring that matched in <code>string</code>, or <code>nil</code> if not found</p>
+<h3 id="string.gmatch"><code>string.gmatch</code></h3>
+<p>Syntax: <code>string.gmatch(string, pattern)</code><br />
+<strong>Returns</strong> an iterable over the substrings that matched <code>pattern</code> in <code>string</code></p>
+<h2 id="patterns">Patterns</h2>
+<p>Patterns in Lua use <code>%</code> as an scape (Because strings and patterns are the same thing in Lua, so using the usual <code>\</code> can be cumbersome)<br />
+Usually, <code>%a</code> where <code>a</code> is alphanumeric has an special meaning, and <code>%.</code> where <code>.</code> is a non-alphanumeric character just represents itself</p>
+<ul>
+<li><code>.</code> - All characters</li>
+<li><code>%a</code> - Letters</li>
+<li><code>%c</code> - Control characters</li>
+<li><code>%d</code> - Digits</li>
+<li><code>%g</code> - Printable characters (Except spaces)</li>
+<li><code>%l</code> - Lower-case letters</li>
+<li><code>%u</code> - Upper-case letters</li>
+<li><code>%p</code> - Punctuation characters</li>
+<li><code>%s</code> - Space characters</li>
+<li><code>%w</code> - Alphanumeric characters</li>
+<li><code>%x</code> - Hexadecimal digits</li>
+</ul>
+<p>An uppercase version of any of the above represents the opposite</p>
+<p>There are also <em>magic characters</em>:<br />
+<code>(</code>, <code>)</code>, <code>.</code>, <code>%</code>, <code>+</code>, <code>-</code>, <code>*</code>, <code>?</code>, <code>[</code>, <code>]</code>, <code>^</code> and <code>$</code></p>
+<p>A <em>char-set</em> is an user-defined character class. All the characters that you want to be matched with need to be put inside <code>[]</code>. A <code>^</code> at the beginning of a <em>char-set</em> represents the opposite of the char-set without it, and you can define ranges with <code>-</code>.</p>
+<ul>
+<li><code>%d</code> → <code>[0-9]</code><br />
+</li>
+<li><code>%x</code> → <code>[0-9a-fA-F]</code><br />
+</li>
+<li><code>%a</code> → <code>[A-Za-z]</code></li>
+</ul>
+<p>We can make these useful with modifiers for repetitions and optional parts</p>
+<ul>
+<li><code>+</code> - 1 or more repetitions</li>
+<li><code>*</code> - 0 or more repetitions</li>
+<li><code>-</code> - 0 or more <strong>lazy</strong> repetitions</li>
+<li><code>?</code> - optional (0 or 1 occurrence)</li>
+</ul>
+<p>Modifiers to locate matches * <code>^</code> - represents beginning of the subject string * <code>$</code> - represents end of the subject string * <code>%bxy</code> - matches balanced strings (Sequences that start with <code>x</code> and end with <code>y</code>)<br />
+Usually useful as <code>%b()</code> or the sort * <code>%f[char-set]</code> - Represents a change form not matching <code>charset</code> to matching it. Always matches an empty string<br />
+<code>%f[%w]the%f[%W]</code> would match a <code>the</code> which is a word by itself, not inside another<br />
+<code>%f[%w]</code> represents a change from <code>%W</code> (Not alphanumeric) to <code>%w</code> (alphanumeric)<br />
+<code>%f[%W]</code> is the opposite, from alphanumeric to not alphanumeric<br />
+Treats as if the string starts and ends in the null character (ASCII code 0)</p>
+<p>We can yank parts of a matched string with the capture mechanism. We specify captures with <code>()</code>. When a pattern has captures, <code>string.match</code> returns each captured value as a separate result. In cases where the first group match is used in other matches, you can specify such group with <code>%N</code> where N is a number. <code>%0</code> represents the whole match</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb50-1" title="1">s <span class="op">=</span> <span class="vs">[[then he said: &quot;it&#39;s all right&quot;!]]</span></a>
+<a class="sourceLine" id="cb50-2" title="2"><span class="vs">quoteChar, quoted Part = string.match(s, &quot;([\&quot;&#39;])(.-)%1&quot;)</span></a></code></pre></div>
+<p>This ensures that once the first group is matched <code>[\"']</code>, it uses the substring it matched with (In our case, <code>"</code>) to complete the pattern.</p>
+<p>This can also be used in <code>string.gsub</code> to compose the <code>replace</code> argument</p>
+<p>An useful idiom to trim a string that uses this fact is the following</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb51-1" title="1"><span class="kw">function</span> trim<span class="op">(</span>s<span class="op">)</span></a>
+<a class="sourceLine" id="cb51-2" title="2">    <span class="cf">return</span> <span class="fu">string.gsub</span><span class="op">(</span>s<span class="op">,</span> <span class="st">&quot;^%s*(.-)%s*$&quot;</span><span class="op">,</span> <span class="st">&quot;%1&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb51-3" title="3"><span class="cf">end</span></a></code></pre></div>
+<h2 id="replacements">Replacements</h2>
+<p>We saw that <code>string.gusb</code> can take both functions and tables as a replacement. A useful example with these</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb52-1" title="1"><span class="kw">function</span> expand<span class="op">(</span>s<span class="op">)</span></a>
+<a class="sourceLine" id="cb52-2" title="2">    <span class="cf">return</span> <span class="fu">string.gsub</span><span class="op">(</span>s<span class="op">,</span> <span class="st">&quot;$(%w*)&quot;</span><span class="op">,</span> <span class="va">_G</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb52-3" title="3"><span class="cf">end</span></a></code></pre></div>
+<p>This will replace any occurrence of <code>$varname</code> with the value of <code>varname</code> if that is a global variable.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb53-1" title="1"><span class="kw">function</span> latex2xml<span class="op">(</span>s<span class="op">)</span></a>
+<a class="sourceLine" id="cb53-2" title="2">    returns <span class="fu">string.gsub</span><span class="op">(</span>s<span class="op">,</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">(%a)</span><span class="er">\</span><span class="st">(%b{})}&quot;</span><span class="op">,</span> <span class="kw">function</span> <span class="op">(</span>tag<span class="op">,</span> body<span class="op">)</span></a>
+<a class="sourceLine" id="cb53-3" title="3">        body <span class="op">=</span> <span class="fu">string.sub</span><span class="op">(</span>body<span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="op">-</span><span class="dv">2</span><span class="op">)</span>         <span class="co">-- get rid of { }</span></a>
+<a class="sourceLine" id="cb53-4" title="4">        body <span class="op">=</span> latex2xml<span class="op">(</span>body<span class="op">)</span>                    <span class="co">-- handle nested commands</span></a>
+<a class="sourceLine" id="cb53-5" title="5">        <span class="cf">return</span> <span class="fu">string.format</span><span class="op">(</span><span class="st">&quot;&lt;%s&gt; %s &lt;/%s&gt;&quot;</span><span class="op">,</span> tag<span class="op">,</span> body<span class="op">,</span> tag<span class="op">)</span></a>
+<a class="sourceLine" id="cb53-6" title="6">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb53-7" title="7"><span class="cf">end</span></a></code></pre></div>
+<p>An emtpy capture (<code>()</code>) captures its position in the subject string. A good example of its use is in tab expansion</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb54-1" title="1"><span class="kw">function</span> expandTabs<span class="op">(</span>s<span class="op">)</span></a>
+<a class="sourceLine" id="cb54-2" title="2">    tab <span class="op">=</span> tab <span class="kw">or</span> <span class="dv">8</span></a>
+<a class="sourceLine" id="cb54-3" title="3">    <span class="kw">local</span> corr <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb54-4" title="4">    s <span class="op">=</span> <span class="fu">string.gsub</span><span class="op">(</span>s<span class="op">,</span> <span class="st">&quot;()</span><span class="sc">\t</span><span class="st">&quot;</span><span class="op">,</span> <span class="kw">function</span> <span class="op">(</span>p<span class="op">)</span></a>
+<a class="sourceLine" id="cb54-5" title="5">        <span class="kw">local</span> sp <span class="op">=</span> tab <span class="op">-</span> <span class="op">(</span>p <span class="op">-</span> <span class="dv">1</span> <span class="op">+</span> corr<span class="op">)%</span>tab</a>
+<a class="sourceLine" id="cb54-6" title="6">        corr <span class="op">=</span> corr <span class="op">-</span> <span class="dv">1</span> <span class="op">+</span> sp</a>
+<a class="sourceLine" id="cb54-7" title="7">        returns <span class="fu">string.rep</span><span class="op">(</span><span class="st">&quot; &quot;</span><span class="op">,</span> sp<span class="op">)</span></a>
+<a class="sourceLine" id="cb54-8" title="8">    <span class="cf">end</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb54-9" title="9"><span class="cf">end</span></a></code></pre></div>
+<p>Make your patterns as specific as possible for speed, avoid empty patterns (Patterns that match an empty string)</p>
+<h2 id="chapter-11---interlude-most-frequent-words">Chapter 11 - Interlude: Most frequent words</h2>
+<div class="sourceCode" id="cb55"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb55-1" title="1"><span class="kw">local</span> counter <span class="op">=</span> <span class="op">{}</span></a>
+<a class="sourceLine" id="cb55-2" title="2"></a>
+<a class="sourceLine" id="cb55-3" title="3"><span class="cf">for</span> line <span class="kw">in</span> <span class="fu">io.lines</span><span class="op">()</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb55-4" title="4">    <span class="cf">for</span> word <span class="kw">in</span> <span class="fu">string.gmatch</span><span class="op">(</span>line<span class="op">,</span> <span class="st">&quot;%w+&quot;</span><span class="op">)</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb55-5" title="5">        counter<span class="op">[</span>word<span class="op">]</span> <span class="op">=</span> <span class="op">(</span>counter<span class="op">[</span>word<span class="op">]</span> <span class="kw">or</span> <span class="dv">0</span><span class="op">)</span> <span class="op">+</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb55-6" title="6">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb55-7" title="7"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb55-8" title="8"></a>
+<a class="sourceLine" id="cb55-9" title="9"><span class="kw">local</span> word <span class="op">=</span> <span class="op">{}</span></a>
+<a class="sourceLine" id="cb55-10" title="10"></a>
+<a class="sourceLine" id="cb55-11" title="11"><span class="cf">for</span> w <span class="kw">in</span> <span class="fu">pairs</span><span class="op">(</span>counter<span class="op">)</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb55-12" title="12">    words<span class="op">[#</span>words<span class="op">+</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> w</a>
+<a class="sourceLine" id="cb55-13" title="13"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb55-14" title="14"></a>
+<a class="sourceLine" id="cb55-15" title="15"><span class="fu">table.sort</span><span class="op">(</span>words<span class="op">,</span> <span class="kw">function</span> <span class="op">(</span>w1<span class="op">,</span> w2<span class="op">)</span></a>
+<a class="sourceLine" id="cb55-16" title="16">    <span class="cf">return</span> counter<span class="op">[</span>w1<span class="op">]</span> <span class="op">&gt;</span> counter<span class="op">[</span>w2<span class="op">]</span> <span class="kw">or</span></a>
+<a class="sourceLine" id="cb55-17" title="17">           counter<span class="op">[</span>w1<span class="op">]</span> <span class="op">==</span> counter<span class="op">[</span>w2<span class="op">]</span> <span class="kw">and</span> w1 <span class="op">&lt;</span> w2</a>
+<a class="sourceLine" id="cb55-18" title="18"><span class="cf">end</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb55-19" title="19"></a>
+<a class="sourceLine" id="cb55-20" title="20"><span class="kw">local</span> n <span class="op">=</span> <span class="fu">math.min</span><span class="op">(</span><span class="fu">tonumber</span><span class="op">(</span>arg<span class="op">[</span><span class="dv">1</span><span class="op">])</span> <span class="kw">or</span> <span class="fu">math.huge</span><span class="op">,</span> <span class="op">#</span>words<span class="op">)</span></a>
+<a class="sourceLine" id="cb55-21" title="21"></a>
+<a class="sourceLine" id="cb55-22" title="22"><span class="cf">for</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> n <span class="cf">do</span></a>
+<a class="sourceLine" id="cb55-23" title="23">    <span class="fu">io.write</span><span class="op">(</span>words<span class="op">[</span>i<span class="op">],</span> <span class="st">&quot;</span><span class="sc">\t</span><span class="st">&quot;</span><span class="op">,</span> counter<span class="op">[</span>words<span class="op">[</span>i<span class="op">]],</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb55-24" title="24"><span class="cf">end</span></a></code></pre></div>
+<h1 id="chapter-12---data-and-time">Chapter 12 - Data and time</h1>
+<p>There are 2 ways: * As an integer that marks the number of seconds that have passed since 1970 * As a table with the fields<br />
+* <code>year</code> (int) * <code>month</code> (int) * <code>day</code> (int) * <code>yday</code> (int) * <code>wday</code> (int) * <code>hour</code> (int) * <code>min</code> (int) * <code>sec</code> (int) * <code>isdst</code> (boolean)</p>
+<p><code>os.time()</code> returns the current date coded as a single number.</p>
+<p><code>os.time({year=..., ..})</code> returns the single number that represents the table provided. At least <code>year</code>, <code>month</code> and <code>day</code> fields must be provided</p>
+<p><code>os.date()</code> is the reverse of <code>os.time()</code>. <code>os.date(op[, time_in_number])</code> is the full syntax.</p>
+<p>If <code>op</code> is <code>"*t"</code>, <code>os.date()</code> returns a table. If <code>time_in_number</code> isn’t provided, <code>os.time()</code> is used</p>
+<p>If <code>op</code> is anything else, returns a string with the format specified in <code>op</code>, where certain keywords may represent different data. If again <code>time_in_number</code> isn’t provided, <code>os.time()</code> is used. Those special keywords are (some of them): * <code>%a</code> abbreviated weekday name * <code>%A</code> full weekday name * <code>%b</code> abbreviated month name * <code>%B</code> full month name * <code>%c</code> data and time * <code>%d</code> data of the month * <code>%H</code> hour, using 24 hour clock * <code>%I</code> hour, using 12 hour clock * <code>%j</code> day of the year * <code>%m</code> month * <code>%M</code> minute * <code>%p</code> either “am” or “pm” * <code>%S</code> second * <code>%w</code> weekday * <code>%W</code> week of the year * <code>%x</code> date * <code>%X</code> time * <code>%y</code> two-digit year * <code>%Y</code> full year * <code>%z</code> timezone * <code>%%</code> %</p>
+<p>When <code>op</code> starts with a <code>!</code>, <code>os.date()</code> interprets the time as <strong>UTC</strong></p>
+<p>To compute differences of dates in seconds, use <code>os.difftime(t1,t2)</code></p>
+<p>For measuring length of execution time of programs or the sort, it’s better to use <code>os.clock()</code>, which returns the number of seconds of CPU time used by the program. This is more precise (float) than <code>os.time()</code> (int)</p>
+<h1 id="chapter-13---bits-and-bytes">Chapter 13 - Bits and bytes</h1>
+<p>Since Lua 5.3, new bitwise operator have been added. These are <code>&amp;</code>, <code>|</code>, <code>~</code> (exclusive or), <code>&gt;&gt;</code>, <code>&lt;&lt;</code>, and the unary <code>~</code></p>
+<h2 id="unsigned-integers">Unsigned integers</h2>
+<p>Not officially supported. Just ignore the sign bit.</p>
+<p>Use <code>%u</code> option in <code>string.format</code> to see an integer as unsigned. <code>%x</code> to see its hexadecimal representation</p>
+<p>To compare, use <code>math.ult</code>, math unsigned less than.</p>
+<h2 id="packing-and-unpacking-binary-data">Packing and unpacking binary data</h2>
+<p>Use <code>string.pack()</code> to pack data onto a string, and <code>string.unpack()</code> to unpack it</p>
+<p><code>string.pack(format, data...)</code> packs <code>data...</code> as specified by <code>format</code></p>
+<p><code>string.unpack(format, str)</code> unpacks the data from <code>str</code> according to <code>format</code>. It also returns the length of the string + 1 as the last value</p>
+<p>The format specifies the integer size: * <code>b</code> for char * <code>h</code> for short * <code>i</code> for int * <code>l</code> for long * <code>j</code> uses the size of a Lua integer</p>
+<p>If any of the above is uppercase, represents an unsigned version of themselves</p>
+<p>For custom number of <code>N</code> bytes, use <code>iN</code></p>
+<p>When unpacking, values must fit in Lua integers.</p>
+<p>Unsigned integers have the extra option <code>t</code> for <code>size_t</code></p>
+<p>We can pack strings in 3 representations: 1. Zero-terminated strings (Uses <code>z</code>) 2. Fixed-length strings (Uses <code>cn</code>, where <code>n</code> is length) 3. Strings with explicit length (Uses <code>sn</code>, where <code>n</code> is length)</p>
+<p>We can pack floats using: * <code>f</code> for single precision * <code>d</code> for double precision * <code>n</code> for Lua float</p>
+<p>A <code>&gt;</code> turns subsequent encodings to a big endian format.<br />
+A <code>&lt;</code> turns subsequent encodings to a little endian format. A <code>=</code> turns subsequent encodings to a machines default endianess</p>
+<p>The <code>!n</code> option forces <code>string.pack</code> to align to multiples of n. Using just <code>!</code> uses the machine’s default.<br />
+The alignment is done by adding extra zeroes.</p>
+<p>The <code>x</code> option means one byte of padding: <code>string.pack</code> adds a zero byte, <code>string.unpack</code> skips one byte from the subject string</p>
+<h2 id="binary-files">Binary files</h2>
+<p>To get a binary file from <code>io.open</code>, use the <code>"b"</code> flag, besides any other flag that’s needed.</p>
+<p>When we read data from such a file, we typically use <code>"a"</code> or <code>"n"</code> to read <code>n</code> bytes</p>
+<p><em>stdin</em> and <em>stdout</em> can only read in <em>text mode</em>, so you can’t use them to read binary files</p>
+<h2 id="examples">Examples</h2>
+<p>Convert from Windows newlines to POSIX newlines</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb56-1" title="1"><span class="kw">local</span> inp <span class="op">=</span> <span class="fu">assert</span><span class="op">(</span><span class="fu">io.open</span><span class="op">(</span>arg<span class="op">[</span><span class="dv">1</span><span class="op">],</span> <span class="st">&quot;rb&quot;</span><span class="op">))</span></a>
+<a class="sourceLine" id="cb56-2" title="2"><span class="kw">local</span> out <span class="op">=</span> <span class="fu">assert</span><span class="op">(</span><span class="fu">io.open</span><span class="op">(</span>arg<span class="op">[</span><span class="dv">2</span><span class="op">],</span> <span class="st">&quot;wb&quot;</span><span class="op">))</span></a>
+<a class="sourceLine" id="cb56-3" title="3"></a>
+<a class="sourceLine" id="cb56-4" title="4"><span class="kw">local</span> dat <span class="op">=</span> inp<span class="op">:</span><span class="fu">read</span><span class="op">(</span><span class="st">&quot;a&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb56-5" title="5">data <span class="op">=</span> <span class="fu">string.gsub</span><span class="op">(</span>data<span class="op">,</span> <span class="st">&quot;</span><span class="sc">\r\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb56-6" title="6">out<span class="op">:</span><span class="fu">write</span><span class="op">(</span>data<span class="op">)</span></a>
+<a class="sourceLine" id="cb56-7" title="7"></a>
+<a class="sourceLine" id="cb56-8" title="8"><span class="fu">assert</span><span class="op">(</span>out<span class="op">:</span><span class="fu">close</span><span class="op">()))</span></a></code></pre></div>
+<p>Prints all strings found in a binary file</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb57-1" title="1"><span class="kw">local</span> f <span class="op">=</span> <span class="fu">assert</span><span class="op">(</span><span class="fu">io.open</span><span class="op">(</span>arg<span class="op">[</span><span class="dv">1</span><span class="op">],</span> <span class="st">&quot;rb&quot;</span><span class="op">))</span></a>
+<a class="sourceLine" id="cb57-2" title="2"><span class="kw">local</span> data <span class="op">=</span> f<span class="op">:</span><span class="fu">read</span><span class="op">(</span><span class="st">&quot;a&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb57-3" title="3"><span class="kw">local</span> validchars <span class="op">=</span> <span class="st">&quot;[%g%s]&quot;</span></a>
+<a class="sourceLine" id="cb57-4" title="4"><span class="kw">local</span> pattern <span class="op">=</span> <span class="st">&quot;(&quot;</span><span class="op">..</span>string<span class="op">.</span>rep<span class="op">(</span>validchars<span class="op">,</span><span class="dv">6</span><span class="op">)..</span><span class="st">&quot;+)</span><span class="sc">\0</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb57-5" title="5"><span class="cf">for</span> w <span class="kw">in</span> <span class="fu">string.gmatch</span><span class="op">(</span>data<span class="op">,</span> pattern<span class="op">)</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb57-6" title="6">    <span class="fu">print</span><span class="op">(</span>w<span class="op">)</span></a>
+<a class="sourceLine" id="cb57-7" title="7"><span class="cf">end</span></a></code></pre></div>
+<p>Create a hexdump</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb58-1" title="1"><span class="kw">local</span> f <span class="op">=</span> <span class="fu">assert</span><span class="op">(</span><span class="fu">io.open</span><span class="op">(</span>arg<span class="op">[</span><span class="dv">1</span><span class="op">],</span> <span class="st">&quot;rb&quot;</span><span class="op">))</span></a>
+<a class="sourceLine" id="cb58-2" title="2"><span class="kw">local</span> blocksize <span class="op">=</span> <span class="dv">16</span></a>
+<a class="sourceLine" id="cb58-3" title="3"><span class="cf">for</span> bytes <span class="kw">in</span> f<span class="op">:</span><span class="fu">lines</span><span class="op">(</span>blocksize<span class="op">)</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb58-4" title="4">    <span class="cf">for</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> <span class="op">#</span>bytes <span class="cf">do</span></a>
+<a class="sourceLine" id="cb58-5" title="5">        <span class="kw">local</span> b <span class="op">=</span> stirng<span class="op">.</span>unpack<span class="op">(</span><span class="st">&quot;B&quot;</span><span class="op">,</span> bytes<span class="op">,</span> i<span class="op">)</span></a>
+<a class="sourceLine" id="cb58-6" title="6">        <span class="fu">io.write</span><span class="op">(</span><span class="fu">string.format</span><span class="op">(</span><span class="st">&quot;%02X &quot;</span><span class="op">,</span> b<span class="op">))</span></a>
+<a class="sourceLine" id="cb58-7" title="7">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb58-8" title="8">    <span class="fu">io.write</span><span class="op">(</span>stirng<span class="op">.</span>rep<span class="op">(</span><span class="st">&quot;   &quot;</span><span class="op">,</span> blocksize <span class="op">-</span> <span class="op">#</span>bytes<span class="op">)</span></a>
+<a class="sourceLine" id="cb58-9" title="9">    bytes <span class="op">=</span> <span class="fu">string.gsub</span><span class="op">(</span>bytes<span class="op">,</span> <span class="st">&quot;%c&quot;</span><span class="op">,</span> <span class="st">&quot;.&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb58-10" title="10">    <span class="fu">io.write</span><span class="op">(</span><span class="st">&quot; &quot;</span><span class="op">,</span> bytes<span class="op">,</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb58-11" title="11"><span class="cf">end</span></a></code></pre></div>
+<h1 id="chapter-14---data-structures">Chapter 14 - Data structures</h1>
+<p>Tables are <strong>the</strong> data structure of Lua</p>
+<h2 id="arrays">Arrays</h2>
+<p>Tables can work as a dynamic array</p>
+<p>In Lua, arrays start a 0</p>
+<h2 id="matrices-multi-dimensional-arrays">Matrices &amp; multi-dimensional arrays</h2>
+<p>Use a table of tables or composing various indexes into a single one.<br />
+Tables must be explicitly initialized</p>
+<p>Composing indexes is more useful when you are using sparse boolean matrices. Use <code>pairs</code> to traverse the</p>
+<p>Multiplying sparse matrices</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb59-1" title="1"><span class="kw">function</span> mult<span class="op">(</span>a<span class="op">,</span>b<span class="op">)</span></a>
+<a class="sourceLine" id="cb59-2" title="2">    <span class="kw">local</span> c <span class="op">=</span> <span class="op">{}</span> <span class="co">-- Return value</span></a>
+<a class="sourceLine" id="cb59-3" title="3">    <span class="cf">for</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> <span class="op">#</span>a <span class="cf">do</span></a>
+<a class="sourceLine" id="cb59-4" title="4">        <span class="kw">local</span> resultline <span class="op">=</span> <span class="op">{}</span> <span class="co">-- c[i]</span></a>
+<a class="sourceLine" id="cb59-5" title="5">        <span class="cf">for</span> k<span class="op">,</span> va <span class="kw">in</span> <span class="fu">pairs</span><span class="op">(</span>a<span class="op">[</span>i<span class="op">])</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb59-6" title="6">            <span class="cf">for</span> j<span class="op">,</span> vb <span class="kw">in</span> <span class="fu">pairs</span><span class="op">(</span>b<span class="op">[</span>k<span class="op">])</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb59-7" title="7">                <span class="kw">local</span> res <span class="op">=</span> <span class="op">(</span>resultline <span class="kw">or</span> <span class="dv">0</span><span class="op">)</span> <span class="op">+</span> va <span class="op">*</span> vb</a>
+<a class="sourceLine" id="cb59-8" title="8">                resultline<span class="op">[</span>j<span class="op">]</span> <span class="op">=</span> <span class="op">(</span>res <span class="op">~=</span> <span class="dv">0</span><span class="op">)</span> <span class="kw">and</span> res <span class="kw">or</span> <span class="kw">nil</span></a>
+<a class="sourceLine" id="cb59-9" title="9">            <span class="cf">end</span></a>
+<a class="sourceLine" id="cb59-10" title="10">        <span class="cf">end</span></a>
+<a class="sourceLine" id="cb59-11" title="11">        c<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> resultline</a>
+<a class="sourceLine" id="cb59-12" title="12">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb59-13" title="13">    <span class="cf">return</span> c</a>
+<a class="sourceLine" id="cb59-14" title="14"><span class="cf">end</span></a></code></pre></div>
+<h2 id="linked-lists">Linked lists</h2>
+<p>Each node is represented by a table</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb60-1" title="1">node <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb60-2" title="2">    <span class="fu">next</span> <span class="op">=</span> node<span class="op">,</span></a>
+<a class="sourceLine" id="cb60-3" title="3">    value <span class="op">=</span> val</a>
+<a class="sourceLine" id="cb60-4" title="4"><span class="op">}</span></a></code></pre></div>
+<p>We can also represent other data structures this way, though it usually isn’t necessary</p>
+<h2 id="queues-and-deques">Queues and deques</h2>
+<p>We can implement them with the help of <code>table.insert</code> and <code>table.remove</code>. As usually a queue doesn’t have that many elements, so indexing by an ever-increasing integer is mostly whats more efficient</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb61-1" title="1"><span class="kw">function</span> listNew<span class="op">()</span></a>
+<a class="sourceLine" id="cb61-2" title="2">    <span class="cf">return</span> <span class="op">{</span>first <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> last <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">}</span></a>
+<a class="sourceLine" id="cb61-3" title="3"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb61-4" title="4"></a>
+<a class="sourceLine" id="cb61-5" title="5"><span class="kw">function</span> pushFirst<span class="op">(</span>list<span class="op">,</span> value<span class="op">)</span></a>
+<a class="sourceLine" id="cb61-6" title="6">    list<span class="op">.</span>first <span class="op">=</span> list<span class="op">.</span>first <span class="op">-</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb61-7" title="7">    list<span class="op">[</span>list<span class="op">.</span>first<span class="op">]</span> <span class="op">=</span> value</a>
+<a class="sourceLine" id="cb61-8" title="8"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb61-9" title="9"></a>
+<a class="sourceLine" id="cb61-10" title="10"><span class="kw">function</span> pushLast<span class="op">(</span>list<span class="op">,</span> value<span class="op">)</span></a>
+<a class="sourceLine" id="cb61-11" title="11">    list<span class="op">.</span>last <span class="op">=</span> list<span class="op">.</span>last <span class="op">+</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb61-12" title="12">    list<span class="op">[</span>list<span class="op">.</span>last<span class="op">]</span> <span class="op">=</span> value</a>
+<a class="sourceLine" id="cb61-13" title="13"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb61-14" title="14"></a>
+<a class="sourceLine" id="cb61-15" title="15"><span class="kw">function</span> popFirst<span class="op">(</span>list<span class="op">)</span></a>
+<a class="sourceLine" id="cb61-16" title="16">    <span class="cf">if</span> list<span class="op">.</span>first <span class="op">&gt;</span> list<span class="op">.</span>last <span class="cf">then</span></a>
+<a class="sourceLine" id="cb61-17" title="17">        <span class="fu">error</span><span class="op">(</span><span class="st">&quot;list is empty&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb61-18" title="18">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb61-19" title="19">    <span class="kw">local</span> value <span class="op">=</span> list<span class="op">[</span>list<span class="op">.</span>first<span class="op">]</span></a>
+<a class="sourceLine" id="cb61-20" title="20">    list<span class="op">[</span>list<span class="op">.</span>first<span class="op">]</span> <span class="op">=</span> <span class="kw">nil</span> <span class="co">-- allow garbage collection</span></a>
+<a class="sourceLine" id="cb61-21" title="21">    list<span class="op">.</span>first <span class="op">=</span> list<span class="op">.</span>first <span class="op">+</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb61-22" title="22">    <span class="cf">return</span> value</a>
+<a class="sourceLine" id="cb61-23" title="23"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb61-24" title="24"></a>
+<a class="sourceLine" id="cb61-25" title="25"><span class="kw">function</span> popLast<span class="op">(</span>list<span class="op">)</span></a>
+<a class="sourceLine" id="cb61-26" title="26">    <span class="cf">if</span> list<span class="op">.</span>first <span class="op">&gt;</span> list<span class="op">.</span>last <span class="cf">then</span></a>
+<a class="sourceLine" id="cb61-27" title="27">        <span class="fu">error</span><span class="op">(</span><span class="st">&quot;list is empty&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb61-28" title="28">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb61-29" title="29">    <span class="kw">local</span> value <span class="op">=</span> list<span class="op">[</span>list<span class="op">.</span>last<span class="op">]</span></a>
+<a class="sourceLine" id="cb61-30" title="30">    list<span class="op">[</span>list<span class="op">.</span>last<span class="op">]</span> <span class="op">=</span> <span class="kw">nil</span></a>
+<a class="sourceLine" id="cb61-31" title="31">    list<span class="op">.</span>last <span class="op">=</span> list<span class="op">.</span>last <span class="op">-</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb61-32" title="32">    <span class="cf">return</span> value</a>
+<a class="sourceLine" id="cb61-33" title="33"><span class="cf">end</span></a></code></pre></div>
+<h2 id="reverse-tables">Reverse tables</h2>
+<p>We seldom do searches in Lua. We normally index those things we want to search in a table with the info we need in them</p>
+<h2 id="sets-and-bags">Sets and bags</h2>
+<p>For sets, just use a table where the indexes are the elements, and they all have true values</p>
+<p>For bags (Or multisets), we do the same thing as with sets, but we assign them a counter instead of true. We delete the keys that end up having an occurrence of zero (So it still returns a false value if latter called)</p>
+<h2 id="string-buffers">String buffers</h2>
+<p>Concatenation can be expensive. More so if we are copying enormous amounts of data over and over, like strings in a concatenation. For this, we have the string buffers.</p>
+<p>We achieve the same behaviour in Lua using the <code>table.concat</code> method, which returns the concatenation of all strings in a table</p>
+<p><code>table.concat(table[, separator)</code> is the full syntax, it accepts a delimiter to use between data.</p>
+<h2 id="graphs">Graphs</h2>
+<p>There are many implementations, although they are all pretty straightforward</p>
+<p><strong>DFS</strong></p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb62-1" title="1"><span class="kw">function</span> findpath<span class="op">(</span>curr<span class="op">,</span> to<span class="op">,</span> path<span class="op">,</span> visited<span class="op">)</span></a>
+<a class="sourceLine" id="cb62-2" title="2">    path <span class="op">=</span> path <span class="kw">or</span> <span class="op">{}</span></a>
+<a class="sourceLine" id="cb62-3" title="3">    visited <span class="op">=</span> visited <span class="kw">or</span> <span class="op">{}</span></a>
+<a class="sourceLine" id="cb62-4" title="4"></a>
+<a class="sourceLine" id="cb62-5" title="5">    <span class="cf">if</span> visited<span class="op">[</span>curr<span class="op">]</span> <span class="cf">then</span></a>
+<a class="sourceLine" id="cb62-6" title="6">        <span class="cf">return</span> <span class="kw">nil</span></a>
+<a class="sourceLine" id="cb62-7" title="7">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb62-8" title="8"></a>
+<a class="sourceLine" id="cb62-9" title="9">    visited<span class="op">[</span>curr<span class="op">]</span> <span class="op">=</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb62-10" title="10">    path<span class="op">[#</span>path <span class="op">+</span> <span class="dv">1</span><span class="op">]</span> <span class="op">=</span> curr</a>
+<a class="sourceLine" id="cb62-11" title="11"></a>
+<a class="sourceLine" id="cb62-12" title="12">    <span class="cf">if</span> curr <span class="op">==</span> to <span class="cf">then</span></a>
+<a class="sourceLine" id="cb62-13" title="13">        <span class="cf">return</span> path</a>
+<a class="sourceLine" id="cb62-14" title="14">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb62-15" title="15"></a>
+<a class="sourceLine" id="cb62-16" title="16">    <span class="cf">for</span> node <span class="kw">in</span> <span class="fu">pairs</span><span class="op">(</span>curr<span class="op">.</span>adj<span class="op">)</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb62-17" title="17">        <span class="kw">local</span> p <span class="op">=</span> findpath<span class="op">(</span>node<span class="op">,</span> to<span class="op">,</span> path<span class="op">,</span> visited<span class="op">)</span></a>
+<a class="sourceLine" id="cb62-18" title="18">        <span class="cf">if</span> p <span class="cf">then</span> <span class="cf">return</span> p <span class="cf">end</span></a>
+<a class="sourceLine" id="cb62-19" title="19">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb62-20" title="20">    <span class="fu">table.remove</span><span class="op">(</span>path<span class="op">)</span></a>
+<a class="sourceLine" id="cb62-21" title="21"><span class="cf">end</span></a></code></pre></div>
+<h1 id="chapter-15---data-files-and-serialization">Chapter 15 - Data files and serialization</h1>
+<h2 id="data-files">Data files</h2>
+<p>If we create the data files, doing so as a .lua program makes reading them after that easier. For example, instead of having this CSV</p>
+<pre class="csv"><code>Donald E. Knuth, Literate Programming, CSLI,1992
+Jon Bentley, More Programming Pearls, Addison-Wesley,1990</code></pre>
+<p>We could write or data as a .lua file like this</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb64-1" title="1">Entry<span class="op">{</span><span class="st">&quot;Donald E. Knuth&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb64-2" title="2">      <span class="st">&quot;Literate Programming&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb64-3" title="3">      <span class="st">&quot;CSLI&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb64-4" title="4">      <span class="dv">1992</span><span class="op">}</span></a>
+<a class="sourceLine" id="cb64-5" title="5"></a>
+<a class="sourceLine" id="cb64-6" title="6">Entry<span class="op">{</span><span class="st">&quot;Jon Bentley&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb64-7" title="7">      <span class="st">&quot;More Programming Pearls&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb64-8" title="8">      <span class="st">&quot;Addisoin-Wesley&quot;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb64-9" title="9">      <span class="dv">1990</span><span class="op">}</span></a></code></pre></div>
+<p>Were each <code>Entry{}</code> is a call to the function <code>Entry</code> in with a table as its only argument.</p>
+<h2 id="serialization">Serialization</h2>
+<p>Generally use <code>tostring</code>. With numbers it’s proper to distinguish between <code>integer</code> and <code>float</code>. Also, write floats in hexadecimal form to avoid precission errors (<code>"%a"</code>). This distinction is done automatically by <code>"%q"</code></p>
+<p>When writting a string, to avoid code injection use the format <code>"%q"</code>, for quoted.</p>
+<p>To save tables, implement a recursive algorithm to circumvent nested tables. Note that the keys should be surrounded by <code>[%s]</code> to ensure the key is a valid identifier. This doesn’t prevent against cycles though</p>
+<p>To prevent cycles, we could do something like:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb65-1" title="1"><span class="kw">function</span> save<span class="op">(</span>name<span class="op">,</span> value<span class="op">,</span> saved<span class="op">)</span></a>
+<a class="sourceLine" id="cb65-2" title="2">    saved <span class="op">=</span> saved <span class="kw">or</span> <span class="op">{}</span></a>
+<a class="sourceLine" id="cb65-3" title="3">    <span class="fu">io.write</span><span class="op">(</span>name<span class="op">,</span> <span class="st">&quot; = &quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb65-4" title="4">    </a>
+<a class="sourceLine" id="cb65-5" title="5">    <span class="kw">local</span> valtype <span class="op">=</span> <span class="fu">type</span><span class="op">(</span>value<span class="op">)</span></a>
+<a class="sourceLine" id="cb65-6" title="6"></a>
+<a class="sourceLine" id="cb65-7" title="7">    <span class="cf">if</span> valtype <span class="op">==</span> <span class="st">&quot;number&quot;</span> <span class="kw">or</span> valtype <span class="op">==</span> <span class="st">&quot;string&quot;</span> <span class="cf">then</span></a>
+<a class="sourceLine" id="cb65-8" title="8">        <span class="fu">io.write</span><span class="op">(</span>stirng<span class="op">.</span>format<span class="op">(</span><span class="st">&quot;%q&quot;</span><span class="op">,</span>value<span class="op">))</span></a>
+<a class="sourceLine" id="cb65-9" title="9">    <span class="cf">elseif</span> valtype <span class="op">==</span> <span class="st">&quot;table&quot;</span> <span class="cf">then</span></a>
+<a class="sourceLine" id="cb65-10" title="10">        <span class="cf">if</span> saved<span class="op">[</span>value<span class="op">]</span> <span class="cf">then</span></a>
+<a class="sourceLine" id="cb65-11" title="11">            <span class="fu">io.write</span><span class="op">(</span>saved<span class="op">[</span>value<span class="op">],</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb65-12" title="12">        <span class="cf">else</span></a>
+<a class="sourceLine" id="cb65-13" title="13">            saved<span class="op">[</span>value<span class="op">]</span> <span class="op">=</span> name</a>
+<a class="sourceLine" id="cb65-14" title="14">            <span class="fu">io.write</span><span class="op">(</span><span class="st">&quot;{}</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb65-15" title="15"></a>
+<a class="sourceLine" id="cb65-16" title="16">            <span class="cf">for</span> k<span class="op">,</span> v <span class="kw">in</span> <span class="fu">pairs</span><span class="op">(</span>value<span class="op">)</span> <span class="cf">do</span></a>
+<a class="sourceLine" id="cb65-17" title="17">                k <span class="op">=</span> <span class="fu">string.format</span><span class="op">(</span><span class="st">&quot;%q&quot;</span><span class="op">,</span> k<span class="op">)</span></a>
+<a class="sourceLine" id="cb65-18" title="18">                <span class="kw">local</span> fname <span class="op">=</span> <span class="fu">string.format</span><span class="op">(</span><span class="st">&quot;%s[%s]&quot;</span><span class="op">,</span> name<span class="op">,</span> k<span class="op">)</span></a>
+<a class="sourceLine" id="cb65-19" title="19">                save<span class="op">(</span>fname<span class="op">,</span>v<span class="op">,</span>saved<span class="op">)</span></a>
+<a class="sourceLine" id="cb65-20" title="20">            <span class="cf">end</span></a>
+<a class="sourceLine" id="cb65-21" title="21">        <span class="cf">end</span></a>
+<a class="sourceLine" id="cb65-22" title="22">    <span class="cf">else</span></a>
+<a class="sourceLine" id="cb65-23" title="23">        <span class="fu">error</span><span class="op">(</span><span class="st">&quot;Cannot save a &quot;</span><span class="op">..</span>valtype<span class="op">)</span></a>
+<a class="sourceLine" id="cb65-24" title="24">    <span class="cf">end</span></a>
+<a class="sourceLine" id="cb65-25" title="25"><span class="cf">end</span></a></code></pre></div>
+<p>This will generate a file with all the assignments needed to recompose the data. For example, given</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb66-1" title="1">a <span class="op">=</span> <span class="op">{</span>x<span class="op">=</span><span class="dv">1</span><span class="op">,</span>y<span class="op">=</span><span class="dv">2</span><span class="op">,</span> <span class="op">{</span><span class="dv">3</span><span class="op">,</span><span class="dv">4</span><span class="op">,</span><span class="dv">5</span><span class="op">}}</span></a>
+<a class="sourceLine" id="cb66-2" title="2">a<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> a</a>
+<a class="sourceLine" id="cb66-3" title="3">a<span class="op">.</span>z <span class="op">=</span> a<span class="op">[</span><span class="dv">1</span><span class="op">]</span></a></code></pre></div>
+<p>it will output</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb67-1" title="1">a <span class="op">=</span> <span class="op">{}</span></a>
+<a class="sourceLine" id="cb67-2" title="2">a<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> <span class="op">{}</span></a>
+<a class="sourceLine" id="cb67-3" title="3">a<span class="op">[</span><span class="dv">1</span><span class="op">][</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb67-4" title="4">a<span class="op">[</span><span class="dv">1</span><span class="op">][</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> <span class="dv">4</span></a>
+<a class="sourceLine" id="cb67-5" title="5">a<span class="op">[</span><span class="dv">1</span><span class="op">][</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="dv">5</span></a>
+<a class="sourceLine" id="cb67-6" title="6"></a>
+<a class="sourceLine" id="cb67-7" title="7">a<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> a <span class="co">-- cycle</span></a>
+<a class="sourceLine" id="cb67-8" title="8">a<span class="op">[</span><span class="st">&quot;y&quot;</span><span class="op">]</span> <span class="op">=</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb67-9" title="9">a<span class="op">[</span><span class="st">&quot;x&quot;</span><span class="op">]</span> <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb67-10" title="10">a<span class="op">[</span><span class="st">&quot;z&quot;</span><span class="op">]</span> <span class="op">=</span> a<span class="op">[</span><span class="dv">1</span><span class="op">]</span></a></code></pre></div>
+<p>Which reconstructs <code>a</code></p>
+<p>If we have distinct tables that are connected to each other, we can save it this way if we provide the save <code>saved</code> table</p>
+<h1 id="chapter-16---compilation-execution-and-errors">Chapter 16 - Compilation, execution and errors</h1>
+<p>Compilation in Lua is expensive, be careful.</p>
+<p><code>loadfile</code> loads a file, compiles it, an returns the code as a function. <code>dofile</code> is a wrapper of <code>loadfile</code></p>
+<p>Also, <code>loadfile</code> doesn’t raise errors but returns error codes. This is, <code>nil</code> as the first argument and an error message as its second.</p>
+<p><code>load</code> behaves like <code>loadfile</code>, but takes strings or functions as an argument. <code>load</code> always behaves in the global environment, that is</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb68-1" title="1">i <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb68-2" title="2"><span class="kw">local</span> i <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb68-3" title="3">f <span class="op">=</span> <span class="fu">load</span><span class="op">(</span><span class="st">&quot;print(i)&quot;</span><span class="op">)</span></a>
+<a class="sourceLine" id="cb68-4" title="4">g <span class="op">=</span> <span class="kw">function</span><span class="op">()</span> <span class="fu">print</span><span class="op">(</span>i<span class="op">)</span> <span class="cf">end</span></a>
+<a class="sourceLine" id="cb68-5" title="5">f<span class="op">()</span></a>
+<a class="sourceLine" id="cb68-6" title="6">g<span class="op">()</span></a></code></pre></div>
+<p>will print</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb69-1" title="1"><span class="dv">0</span></a>
+<a class="sourceLine" id="cb69-2" title="2"><span class="dv">1</span></a></code></pre></div>
+<p>This variables also don’t have any kind of effect (Don’t create variables, write to files, etc)</p>
+<p>We can precompile Lua code with the <code>luac</code> command.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb70-1" title="1"><span class="ex">luac</span> -o prog.lc prog.lua</a></code></pre></div>
+<p>Precompiled code can be run by the <code>lua</code> interpreter</p>
+<h2 id="errors">Errors</h2>
+<p>Lua can’t just crash, as it’s designed to be an embedded language.</p>
+<p>To raise an error, use <code>error(err_msg)</code></p>
+<p>To raise an error if a condition happens, use <code>assert(cond, err_msg)</code>. Be aware that <code>assert</code> is a regular function, that is, it evaluates both arguments before execution</p>
+<p>A program when presented with an error can either return an error code (<code>nil</code> or <code>false</code> typically), or raise an error.</p>
+<p>You should raise an error only if the mistake is easy to detect by other means (like a call to <code>math.sin</code> with a table) and return an error code if it’s more difficult (like in <code>io.open(fn)</code>, if <code>fn</code> is not a file)</p>
+<h2 id="error-handling">Error-handling</h2>
+<p>To handle errors in a piece of code, surround the code in a function and provide it to <code>pcall</code>.</p>
+<p><code>pcall</code> calls its first argument in protected mode, that is, no errors will be raised.</p>
+<p>If the call fails, it will return <code>false</code> and an error message</p>
+<p>If the call succeeds, it will return <code>true</code> plus any values returned by the call.</p>
+<p><strong>An error message doesn’t actually need to be a <code>string</code>, it can be any object (like a table)</strong></p>
+<p>However, if we use a string, Lua will fill it with more information about where the error happened.</p>
+<p>If we know an error occurred in the caller function, not where it was detected, we can communicate this by supplying an extra argument to <code>error</code></p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb71-1" title="1"><span class="fu">error</span><span class="op">(</span><span class="st">&quot;String expected&quot;</span><span class="op">,</span> <span class="dv">2</span><span class="op">)</span></a></code></pre></div>
+<p>The <code>2</code> tells Lua the error happened on level 2 in the calling hierarchy</p>
+<p>Because <code>pcall</code> destroys part of the stack, we don’t get part of the traceback. To amend this, we use <code>xpcall(func, handler)</code>, which calls its second argument before the stack unwinds.</p>
+<p>Useful functions to put there are: * <code>debug.debug</code>, which gives you a Lua prompt, to figure out what’s wrong * <code>debug.traceback</code>, which builds an extended error message with a traceback</p>
+<h1 id="chapter-17---modules-and-packages">Chapter 17 - Modules and Packages</h1>
+<p>A module is “some code that can be loaded through the function <code>require</code> and that creates and returns a table”.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb72-1" title="1"><span class="kw">local</span> m <span class="op">=</span> <span class="fu">require</span> <span class="st">&quot;math&quot;</span></a></code></pre></div>
+<p>Assigns the table with all the functions in <code>math</code> to <code>m</code>.</p>
+<p>The standard libraries are preloaded by the interpreter</p>
+<p><code>require</code> is just a regular Lua function.</p>
+<p>The first thing it does is check that the module it’s trying to load wasn’t loaded beforehand by checking <code>package.loaded</code></p>
+<p>Then, if it wasn’t loaded previously, it looks for a Lua file with the same name using <code>package.path</code>, and loads it with <code>loadfile</code></p>
+<p>If no Lua file was found, it looks for a valid C file, using <code>package.cpath</code>, and loads it with <code>package.loadlib</code></p>
+<p>To finally load the module, <code>require</code> loads the loader (returned by <code>loadfile</code> or <code>package.loadlib</code>) with 2 arguments:</p>
+<ul>
+<li>The module name</li>
+<li>The file where it got the loader</li>
+</ul>
+<p>These are usually ignored</p>
+<p>If there was a return value, this is stored in the table <code>package.loaded</code> for later use.</p>
+<p>If no value was returned, and no entry in <code>package.loaded</code> was modified, it behaves as if it returned true (To be able to detect it was run in the first time)</p>
+<p>To force require to load <code>modname</code> twice, clear <code>package.loaded.modname</code></p>
+<p>When loading a C library, all text after a <code>-</code> will be ignored in the name of the function (So <code>mod-v1</code> would be accessed by <code>luaopen_mod</code>, not <code>luaopen_mod-v1</code>)</p>
+<p>Lua gets the values of <code>package.path</code> from the environment variables <code>LUA_PATH_5_3</code> or <code>LUA_PATH</code>. In case these are not set, it uses its own default.</p>
+<p>To reference the default path, use <code>;;</code> in the environment variables</p>
+<p>Same with <code>package.cpath</code> and the environment variables <code>LUA_CPATH_5_3</code> or <code>LUA_CPATH</code></p>
+<p>These matching rules are applied by the function <code>package.searchpath(module, path)</code></p>
+<h2 id="searchers">Searchers</h2>
+<p>The concept of searching for a Lua file or C library are two instances of the more general concept of <code>searchers</code></p>
+<p>When <code>require</code> is called, it uses all of the searchers in <code>package.searchers</code></p>
+<p>Before searching for Lua files or C libraries, the <code>preload</code> searcher is used. This checks the table <code>package.preload</code> to see if a loader function was defined for the package provided.</p>
+<h2 id="basic-approach-to-writing-modules-in-lua">Basic approach to writing modules in Lua</h2>
+<div class="sourceCode" id="cb73"><pre class="sourceCode lua"><code class="sourceCode lua"><a class="sourceLine" id="cb73-1" title="1"><span class="kw">local</span> <span class="cn">M</span> <span class="op">=</span> <span class="op">{}</span></a>
+<a class="sourceLine" id="cb73-2" title="2"><span class="kw">local</span> <span class="kw">function</span> new <span class="op">(</span>r<span class="op">,</span> i<span class="op">)</span> <span class="co">-- Makes the function private</span></a>
+<a class="sourceLine" id="cb73-3" title="3">    reutrn <span class="op">{</span>r <span class="op">=</span> r<span class="op">,</span> i <span class="op">=</span> i<span class="op">}</span></a>
+<a class="sourceLine" id="cb73-4" title="4"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb73-5" title="5"></a>
+<a class="sourceLine" id="cb73-6" title="6"><span class="cn">M</span><span class="op">.</span>new <span class="op">=</span> new</a>
+<a class="sourceLine" id="cb73-7" title="7"></a>
+<a class="sourceLine" id="cb73-8" title="8"><span class="cn">M</span><span class="op">.</span>i <span class="op">=</span> new<span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">1</span><span class="op">)</span> <span class="co">-- Constant i</span></a>
+<a class="sourceLine" id="cb73-9" title="9"></a>
+<a class="sourceLine" id="cb73-10" title="10"><span class="kw">function</span> <span class="cn">M</span><span class="op">.</span>add<span class="op">(</span>c1<span class="op">,</span> c2<span class="op">)</span></a>
+<a class="sourceLine" id="cb73-11" title="11">    <span class="cf">return</span> new <span class="op">(</span>c1<span class="op">.</span>r <span class="op">+</span> c2<span class="op">.</span>r<span class="op">,</span> c1<span class="op">.</span>i <span class="op">+</span> c2<span class="op">.</span>i<span class="op">)</span></a>
+<a class="sourceLine" id="cb73-12" title="12"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb73-13" title="13"></a>
+<a class="sourceLine" id="cb73-14" title="14"><span class="kw">function</span> <span class="cn">M</span><span class="op">.</span>sub<span class="op">(</span>c1<span class="op">,</span> c2<span class="op">)</span></a>
+<a class="sourceLine" id="cb73-15" title="15">    <span class="cf">return</span> new <span class="op">(</span>c1<span class="op">.</span>r <span class="op">-</span> c2<span class="op">.</span>r<span class="op">,</span> c1<span class="op">.</span>i <span class="op">-</span> c2<span class="op">.</span>i<span class="op">)</span></a>
+<a class="sourceLine" id="cb73-16" title="16"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb73-17" title="17"></a>
+<a class="sourceLine" id="cb73-18" title="18"><span class="kw">function</span> <span class="cn">M</span><span class="op">.</span>mul<span class="op">(</span>c1<span class="op">,</span> c2<span class="op">)</span></a>
+<a class="sourceLine" id="cb73-19" title="19">    <span class="cf">return</span> new <span class="op">(</span>c1<span class="op">.</span>r <span class="op">*</span> c2<span class="op">.</span>r<span class="op">,</span> c1<span class="op">.</span>i <span class="op">*</span> c2<span class="op">.</span>i<span class="op">)</span></a>
+<a class="sourceLine" id="cb73-20" title="20"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb73-21" title="21"></a>
+<a class="sourceLine" id="cb73-22" title="22"><span class="kw">local</span> <span class="kw">function</span> inv<span class="op">(</span>c<span class="op">)</span> <span class="co">-- Makes the function private</span></a>
+<a class="sourceLine" id="cb73-23" title="23">    <span class="kw">local</span> n <span class="op">=</span> c<span class="op">.</span>r<span class="op">^</span><span class="dv">2</span> <span class="op">+</span> c<span class="op">.</span>i<span class="op">^</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb73-24" title="24">    <span class="cf">return</span> new<span class="op">(</span>c<span class="op">.</span>r<span class="op">/</span>n<span class="op">,</span> <span class="op">-</span>c<span class="op">.</span>i<span class="op">/</span>n<span class="op">)</span></a>
+<a class="sourceLine" id="cb73-25" title="25"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb73-26" title="26"></a>
+<a class="sourceLine" id="cb73-27" title="27"><span class="kw">function</span> <span class="cn">M</span><span class="op">.</span>div <span class="op">(</span>c1<span class="op">,</span>c2<span class="op">)</span></a>
+<a class="sourceLine" id="cb73-28" title="28">    <span class="cf">return</span> <span class="cn">M</span><span class="op">.</span>mul<span class="op">(</span>c1<span class="op">,</span> inv<span class="op">(</span>c2<span class="op">))</span></a>
+<a class="sourceLine" id="cb73-29" title="29"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb73-30" title="30"></a>
+<a class="sourceLine" id="cb73-31" title="31"><span class="kw">function</span> <span class="cn">M</span><span class="op">.</span>tostring<span class="op">(</span>c<span class="op">)</span></a>
+<a class="sourceLine" id="cb73-32" title="32">    <span class="cf">return</span> <span class="fu">string.format</span><span class="op">(</span><span class="st">&quot;(%g,%g)&quot;</span><span class="op">,</span>c<span class="op">.</span>r<span class="op">,</span>c<span class="op">.</span>i<span class="op">)</span></a>
+<a class="sourceLine" id="cb73-33" title="33"><span class="cf">end</span></a>
+<a class="sourceLine" id="cb73-34" title="34"></a>
+<a class="sourceLine" id="cb73-35" title="35"><span class="cf">return</span> <span class="cn">M</span></a></code></pre></div>
+<p>You can substitute the final <code>return M</code> with <code>package.loaded[...] = M</code>, which will explicitly set the package as loaded</p>
+<p>Another approach is to make all the functions local and then build the returning table at the end</p>
+<h2 id="submodules-and-packages">Submodules and packages</h2>
+<p>A module is a Lua file made to be imported</p>
+<p>A submodule is a module in some package</p>
+<p>A package is the complete tree of modules</p>
+<h2 id="extra">Extra</h2>
+<p>If a path has no <code>?</code> in <code>package.path</code>, it will always be recognized as a valid path.</p>
+<hr />
+<h1 id="chapter-18---iterators-and-the-generic-for">Chapter 18 - Iterators and the generic for</h1>
+</body>
+</html>
