@@ -1519,3 +1519,144 @@ Useful functions to put there are:
  prompt, to figure out what's wrong
  * `debug.traceback`, which builds an 
  extended error message with a traceback
+
+# Chapter 17 - Modules and Packages
+
+A module is "some code that can be loaded 
+through the function `require` and that creates
+and returns a table".
+
+```lua
+local m = require "math"
+```
+Assigns the table with all the functions in 
+`math` to `m`.
+
+The standard libraries are preloaded by the
+interpreter
+
+`require` is just a regular Lua function. 
+
+The first thing it does is check that the 
+module it's trying to load wasn't loaded
+beforehand by checking `package.loaded`
+
+Then, if it wasn't loaded previously, it 
+looks for a Lua file with the same name using
+`package.path`, and loads it with `loadfile`
+
+If no Lua file was found, it looks for a
+valid C file, using `package.cpath`, and 
+loads it with `package.loadlib`
+
+To finally load the module, `require` loads
+the loader (returned by `loadfile` or 
+`package.loadlib`) with 2 arguments:
+
+ * The module name
+ * The file where it got the loader  
+
+These are usually ignored
+
+If there was a return value, this is stored
+in the table `package.loaded` for later use.
+
+If no value was returned, and no entry in 
+`package.loaded` was modified, it behaves as
+if it returned true (To be able to detect it
+was run in the first time)
+
+To force require to load `modname` twice, 
+clear `package.loaded.modname`
+
+When loading a C library, all text after a 
+`-` will be ignored in the name of the 
+function (So `mod-v1` would be accessed by
+`luaopen_mod`, not `luaopen_mod-v1`)
+
+Lua gets the values of `package.path` from
+the environment variables `LUA_PATH_5_3` or
+`LUA_PATH`. In case these are not set, it 
+uses its own default. 
+
+To reference the default path, use `;;` in
+the environment variables
+
+Same with `package.cpath` and the environment
+variables `LUA_CPATH_5_3` or `LUA_CPATH`
+
+These matching rules are applied by the 
+function `package.searchpath(module, path)`
+
+## Searchers
+The concept of searching for a Lua file or C 
+library are two instances of the more general
+concept of `searchers`
+
+When `require` is called, it uses all of the
+searchers in `package.searchers`
+
+Before searching for Lua files or C libraries,
+the `preload` searcher is used. This checks
+the table `package.preload` to see if a loader
+function was defined for the package provided.
+
+## Basic approach to writing modules in Lua
+```lua
+local M = {}
+local function new (r, i) -- Makes the function private
+	reutrn {r = r, i = i}
+end
+
+M.new = new
+
+M.i = new(0,1) -- Constant i
+
+function M.add(c1, c2)
+	return new (c1.r + c2.r, c1.i + c2.i)
+end
+
+function M.sub(c1, c2)
+	return new (c1.r - c2.r, c1.i - c2.i)
+end
+
+function M.mul(c1, c2)
+	return new (c1.r * c2.r, c1.i * c2.i)
+end
+
+local function inv(c) -- Makes the function private
+	local n = c.r^2 + c.i^2
+	return new(c.r/n, -c.i/n)
+end
+
+function M.div (c1,c2)
+	return M.mul(c1, inv(c2))
+end
+
+function M.tostring(c)
+	return string.format("(%g,%g)",c.r,c.i)
+end
+
+return M
+```
+
+You can substitute the final `return M` with
+`package.loaded[...] = M`, which will 
+explicitly set the package as loaded
+
+Another approach is to make all the functions
+local and then build the returning table at
+the end
+
+## Submodules and packages
+A module is a Lua file made to be imported
+
+A submodule is a module in some package
+
+A package is the complete tree of modules
+
+## Extra
+If a path has no `?` in `package.path`, it 
+will always be recognized as a valid path.
+
+
