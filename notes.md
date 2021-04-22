@@ -1663,3 +1663,61 @@ will always be recognized as a valid path.
 ---
 
 # Chapter 18 - Iterators and the generic for
+
+## Iterators and closures
+An iterator is a construction that allows us
+to iterate over the elements of a collection,
+usually with a function.
+
+A call to the function represents a `next`,
+when there are no more lines to be read, it
+returns nil
+
+To store state between succesive calls, 
+`io.read` uses its stream structure (from C),
+and user-made iterators usually use closures.
+We have a factory function that creates the
+actual iterable function
+
+```lua
+function values(t)
+	local i = 0
+	return function()
+		i = i + 1
+		return t[i]
+	end
+end
+``` 
+
+```lua
+t = {10, 20, 30}
+for element in values(t) do
+	print(element)
+end
+```
+
+Another example, to iterate over all words
+of standard input
+```lua
+function allwords()
+	local line = io.read()
+	local pos = 1
+	return function()
+		while line do --repeat while there are lines
+			local w, e = string.match(line,"(%w+)()", pos)
+			if w then
+				pos = e	 --next position after this word
+				return w
+			else
+				line = io.read() -- try next line
+				pos = 1		     -- start from beginning
+			end
+		end
+		return nil -- no more line
+	end
+end
+```
+
+Iterators are often not easy to write but easy to use
+
+
