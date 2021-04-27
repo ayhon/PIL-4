@@ -1718,6 +1718,48 @@ function allwords()
 end
 ```
 
-Iterators are often not easy to write but easy to use
+Iterators are often not easy to write, but easy to use
 
+## Stateless operators
+This operators don't use closures to keep state.
+For example, `ipairs` is this kind of iterator. It returns
+3 things:
+ * A function as the iterator
+ * An invariant state (A table)
+ * An initial value (for `ipairs`, 0)
 
+Like so:
+```lua
+function ipairs(t)
+	return iter, t, 0
+end
+```
+where the function `iter` is defined as:
+```lua
+local function iter(t,i)
+	local v = t[i+1]
+	if v then
+		return i+1, v
+	end
+end
+```
+
+The for loop then calls the function given in 
+the first argument and calls it with the other
+2 arguments (Invariant state and initial value),
+to calculate the next element without modifying
+or keeping state.
+
+`pairs` works similarly, but with the `next` 
+function
+
+## True iterators
+We are actually not writing iterators, but 
+generators, functions that return elements.
+
+We can get actual iterators with a function
+that, given a function, applies it over all
+elements.
+
+This used to be popular when there was no
+for statement in Lua.
