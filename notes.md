@@ -1771,5 +1771,187 @@ A little programm to pseudo-randomly predict
 what goes next in a text.
 
 ```lua
+-- AUXILIARY FUNCTIONS --
+function allwords() -- Iterate over words form stdin
+	local line = io.read()
+	local pos = 1
+	return function()
+		while line do
+			local w, e = string.match(line, "(%w+[,;.:]?)()", pos)
+			if w then
+				pos = e
+				return w
+			else
+				line = io.read()
+				pos = 1
+			end
+		end
+		return nil
+	end
+end
 
+function prefix(w1, w2)
+	return w1 .. " " .. w2
+end
+
+local statetab = {}
+
+function insert(prefix, value)
+	local list = statetab[prefix]
+	if list == nil then
+		statetab[prefix] = {value}
+	else
+		list[#list + 1] = value
+	end
+end
+io.input(io.open(arg[1] or "") or io.input())
+
+-- ALGORITHM --
+local MAXGEN = 200
+local NOWORD = "\n"
+
+-- build table
+local w1, w2 = NOWORD, NOWORD
+for nextword in allwords() do
+	insert(prefix(w1, w2), nextword)
+	w1 = w2;
+	w2 = nextword;
+end
+insert(prefix(w1, w2), NOWORD)
+
+--generate text
+w1 = NOWORD
+w2 = NOWORD
+for i = 1, MAXGEN do
+	local list = statetab[prefix(w1, w2)]
+	local r = math.random(#list)
+	local nextword = list[r]
+
+	if nextword == NOWORD then goto break end
+	io.write(nextword, " ")
+	w1 = w2
+	w2 = nextword
+end
+::break::
+io.write("\n")
 ```
+
+# Chapter 20 - Metatables and metamethods
+For tables and userdata, we can predefine their
+behaviour when added, substracted and operated
+in general using _metamethods_, defined in a 
+_metatable_.
+
+_metatables_ are just tables with special 
+methods, the _metamethods_
+
+`setmetatable(obj, table)` sets _metatables_  
+`getmetatable(obj)` returns _metatables_
+
+Other type's _metatables_ can be modified 
+using the debug library or C code.
+
+`strings` have a common predefined _metatable_
+
+## Metamethods
+
+### Arithmetic
+When looking for a arithmetic metamethod,
+Lua will look first in the metatable of the 
+first operand, then in the metatable of the 
+second operand, and if nothing is available,
+raise an error.
+* `__add`
+* `__mul`
+* `__sub`
+* `__div` Float division
+* `__idiv` Integer division
+* `__unm` Unary minus
+* `__mod`
+* `__pow` 
+* `__len` `#` operator
+
+* `__band` `&` operator
+* `__bor` `|` operator
+* `__bxor` `~` operator
+* `__bnot` `~` operator (unary)
+* `__shl` `<<` operator
+* `__shr` `>>` operator
+* `__concat` `..` operator
+* `__call` `()` operator
+
+### Relational
+When looking for a relational metamethod,
+Lua will check that both operands share the
+same metatable.
+* `__eq`   
+  Also used in `~=`
+* `__lt`   
+  Also used in `>`
+* `__le`   
+  Also used in `>=`
+
+### Library-defined metamethods
+* `__tostring`
+* `__metatable` What to return with 
+`getmetatable`. When set, `setmetatable` 
+will always return an error
+* `__pairs` What `pairs` calls to if it's
+defined
+
+### Table-access methods
+* `__index` Define what to return after an 
+unsuccessful access attempt in a table.  
+Accepts a table instead of a function  
+To avoid calling this method, use `rawget(t,k)`
+* `__newindex` Define what to do when
+assigning a value to an absent key in the
+table  
+To avoid calling this method, use `rawset(t,k,v)`
+
+## Tracking table accesses
+As table access can only be monitored
+when using a key not in the table, the
+actual table must be empty and only 
+serve as a proxy to another table 
+contained in the _metatable_
+
+```lua
+function track(t)
+	local proxy = {}
+
+	local mt = {
+		__index = function(_, k)
+			print("*access to element " .. tostring(k))
+			return t[k]
+		end,
+
+		__newindex = function(_, k, v)
+			print("*update of element " .. tostring(k) ..
+			      " to " .. tostring(v))
+			t[k] = v
+		end,
+
+		__pairs = function()
+			return function(_, k)
+				local nextkey, nextvalue = next(t, k)
+				if nextkey ~= nil then
+					print("*traversing element " .. tostring(nextkey))
+				end
+				return nextkey, nextvalue
+			end
+		end,
+
+		__len = function() return #t end
+	}
+
+	setmetatable(proxy, mt)
+
+	return proxy
+end
+```
+
+From this, it's easy to implement a read-only
+table. Just replace the `__newindex` method
+with something that does nothing / raises an
+error.
