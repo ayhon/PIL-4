@@ -80,7 +80,7 @@ There are 8, though Lua is dinamically typed:
 The function `type()` returns an objects type's name
 as a string
 
-# Chapter 2 - Interlude, The Eight-Queen puzzle
+# Chapter 2 - Interlude: The Eight-Queen puzzle
 ```lua
 N = 8 -- board size
 
@@ -942,7 +942,8 @@ end
 ```
 
 An emtpy capture (`()`) captures its position in the subject
-string.  A good example of its use is in tab expansion
+string. This is, the position of the character at its right.
+A good example of its use is in tab expansion
 ```lua
 function expandTabs(s)
     tab = tab or 8
@@ -1763,3 +1764,12 @@ elements.
 
 This used to be popular when there was no
 for statement in Lua.
+
+# Chapter 19 - Interlude: Markov chains
+
+A little programm to pseudo-randomly predict 
+what goes next in a text.
+
+```lua
+
+```
