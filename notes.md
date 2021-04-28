@@ -1870,7 +1870,6 @@ raise an error.
 * `__mod`
 * `__pow` 
 * `__len` `#` operator
-
 * `__band` `&` operator
 * `__bor` `|` operator
 * `__bxor` `~` operator
