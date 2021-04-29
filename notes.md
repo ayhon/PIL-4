@@ -1954,3 +1954,145 @@ From this, it's easy to implement a read-only
 table. Just replace the `__newindex` method
 with something that does nothing / raises an
 error.
+
+# Chapter 21 - Object-Oriented Programming
+
+`table:func(...)` is just syntactic sugar for
+`table:func(table, ...)`
+
+With this and tables, we can already have the
+concept of methods, attributes and state.
+
+## Class definitions
+
+For inheritance, we can use the approach of 
+prototype-based languages like JavaScript.
+Objects don't have classes but prototypes, 
+which are objects where they look for values
+they themselves don't know
+
+`setmetatable(A, {__index = B})` makes B a 
+prototype of A
+
+#### Example of class behaviour when calling a method
+This is the preliminary code we have
+```lua
+-- Some table Accout, acts as class
+local mt = {__index = Account}
+
+function Account.new (o)
+	 o = o or {}
+	 setmetatable(o, mt)
+	 return o
+end
+
+a = Account.new{balance = 0}
+```
+Therefore, whatever table we create from
+`Account.new` (like `a`), has `Account` as its 
+prototype.
+
+Now, let's analyze what happens here:
+```lua
+a:deposit(100.00)
+```
+This is just syntactic sugar for
+```lua
+a.deposit(a, 100.00)
+```
+Since `a` doesn't have a field `deposit`, we
+look at the `__index` method for instructions.
+Here, `__index` is a table.
+```lua
+getmetatable(a).__index.deposit(a, 100.00)
+```
+However, the `__index` method is told to look
+in the `Account` table, so finally, what Lua
+performs is the following operation
+```lua
+Account.deposit(a, 100.00)
+```
+which is the `deposit` function defined inside
+of the table `Account`, but with the `self`
+keyword assigned to `a`.
+
+As an improvement to the following scheme, we
+can make `mt`'s methods be a part of the 
+`Account` table.
+
+Also, we can modify the `new` method so it takes
+a `self` argument as well
+```lua
+function Account:new(o)	 
+	o = o or {}
+	self.__index = self
+	setmetatable(o, self)
+	return o
+end
+```
+so when we call `Account:new()`, `o`'s _metatable_
+is `Account`, where we did previously
+`Account.__index = Account`, which means _"for any
+table I'm its metatable, look within me for unknow
+keys"_
+
+This second change may seem unnecessary, but it
+proves its worth after we talk about inheritance
+
+## Inheritance
+If we invoke the `new` method of a class from an 
+instance of a class, we are creating but a new 
+object that inherits from it. Therefore, to 
+implement class inheritance, we have but to create
+a new instance of the parent class, modify it as 
+we wish, and then use it as a class to define new
+objects. This is the advantage of making `new` a 
+method
+
+```lua
+local A = { yes = true }
+function A:new (o)
+	 o = o or {}
+	 self.__index = self
+	 setmetatable(o, self)
+	 return o
+end
+local B = A:new{ msg = "yes" }
+a = A:new()
+b = B:new()
+```
+In this example, `a`'s prototype (Or _metatable_) 
+is `A`, but `b`'s prototype is `B`
+
+If we look for `b.yes`, Lua will look at its
+_metatable_, `B`, which will redirect to its
+_metatable_, `A`, which has the method we were
+looking for
+
+## Multiple inheritance
+For multiple inheritance, just replace the `.__index`
+method to use a function that looks for the methods
+in various classes.
+```lua
+local function search(k, plist)
+	for i = 1, #plist do
+		local v = plist[i][k]
+		if v then return v end
+	end
+end
+
+function createClass(...)
+	local c = {}
+	local parents = {...}
+	setmetatable(c, {.__index = function(_, k)
+		return search(k, parents)
+	end)
+	c.__index = c -- Make it behave like a class
+	function c:new(o) -- Create constructor
+		 o = o or {}
+		 setmetatable(o,c)
+		 return o
+	end
+	return c
+end
+```
