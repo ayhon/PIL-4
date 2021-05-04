@@ -1522,7 +1522,7 @@ Useful functions to put there are:
  * `debug.traceback`, which builds an 
  extended error message with a traceback
 
-# Chapter 17 - Modules and Packages
+# Chapter 17 - Modules and packages
 
 A module is "some code that can be loaded 
 through the function `require` and that creates
@@ -2096,3 +2096,75 @@ function createClass(...)
 	return c
 end
 ```
+
+# Chapter 22 - The environment
+As an approximation, we can think that Lua keeps
+its global variables in a table ,`_G`, called the
+global environment.
+
+You can do some metaprogramming and access a 
+variable who's name is stored in another variable
+using this table.
+```lua
+_G[varname]
+```
+
+You can restrict the use of global variables 
+using metatables on `_G`, overwriting the 
+`__newindex`. 
+
+`strict.lua` is a module that implements the 
+restriction of not allowing global variables
+to be declared inside of functions (With clever
+use of the `debug.getinfo(2,"s")` method). It's
+good practice to use it.
+
+Global variables are an illusion. The Lua compiler
+translates any free names `n` to `_ENV.n`, where
+a free name is a possible variable name not being
+used in the local scope.
+
+The `_ENV` variable also can't be a global 
+variable, since Lua doesn't have global variables.
+
+When a chunk is compiled into an anonymous 
+function, the `_ENV`variable is defined, local to
+that chunk, and taking as an original value the 
+global environment (Which Lua keeps track of on
+its own)
+
+We can modify `_ENV` to alter the environment of
+certain code chunks, if you wish.
+
+If we do not wish to permanently changed the 
+environment, for example, we could do this:
+```lua
+local newgt = {}
+setmetatable(newgt, {__index = _G})
+_ENV = newgt
+```
+This way, new assignments go to `newgt` but all
+values are inherited from `_G`.
+
+`_ENV` follows the scoping rules of regular 
+values.
+
+You can pass `loadfile` and `load` an extra 
+argument with the environment table to use.
+
+In case you want to use different environments
+in the same code chunk and don't wish to 
+recompile the chunk every time, you can use
+`debu.setupvalue(function, index, value)` to
+change the _upvalue_ at index `index` to `value`
+
+This is kind of messy, as it requires that we
+use the `debug` library. We can circumvent this
+by prepending the chunk of code this `_ENV = ...`
+which will ensure that the first argument will 
+be set as the environment of the following 
+chunk. 
+
+Recall that **upvalues** or **non-local variables** 
+are variables used inside a function constructor 
+but defined elsewhere.
