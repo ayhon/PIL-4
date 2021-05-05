@@ -2168,3 +2168,204 @@ chunk.
 Recall that **upvalues** or **non-local variables** 
 are variables used inside a function constructor 
 but defined elsewhere.
+
+# Chapter 23 - Garbage
+
+God bless the garbage collector. It isn't a 
+perfect being, so we as programmers can help it
+
+## Weak tables
+A weak reference is a reference that is not 
+considered by the garbage collector. A weak table
+is a table whose entries are weak. Both keys and
+values of a table can be weak referenced. Which
+are the weak references can be distinguished 
+through the _metamethod_ `__mode`
+
+* `__mode = "k"` means keys are weak
+* `__mode = "v"` means values are weak
+* `__mode = "kv"` means keys and values are weak
+
+Else, the table is considered to have no weak
+references
+
+If a weak reference on a table is eliminated, 
+the entire entry is removed, regardless of whether
+it was a key or a value
+
+`collectgarbage()` forces a garbage collection
+cycle
+
+### Memorize functions
+
+Use weak tables to memorize function results to
+speed computing times
+
+### Object attributes
+
+To keep an object's attributes private, we can
+store them in a table and use the object as the
+keys to access them. This is called 
+**dual-representation**
+
+Instead of 
+```lua
+o = {
+	x = 10,
+	y = 30
+}
+```
+we do
+```
+o, x, y = {}, {}, {}
+x[o] = 10
+y[o] = 30
+```
+
+To make this work, the keys on the `x` and `y`
+tables must have their keys be weak references.
+
+However, the table can't hold weak values, or
+attributes of live objects could be collected
+
+### Default values in tables
+
+We can implement this using dual-representation
+or memorization.
+
+Dual-representation would be having a weak 
+table with each table's default, so we only
+have to define one _metatable_ that accesses it
+to look for each objects default
+
+Memorization would be having a function that
+returns _metatables_ depending on the default
+value selected, but remembers if a past default
+value was used and returns the same _metatable_
+
+### Ephemeron tables
+
+If in a table with weak keys, a value refers to
+its own key, we have a problem. 
+
+Picture a table that maps an object to a function
+that uses that object (Not that weird if we think
+of a memorization of a function)
+
+```lua
+mem[o] = (function() return o end)
+```
+
+Then, the `o` object is always being referenced, 
+so even if `mem` is a weak table, this entry will
+never get deleted.
+
+To solve this, `"kv"` weak tables in Lua are 
+_ephemeron tables_, which means that for an entry
+`(k,v)`, a reference to `v` is only strong if 
+there is a strong reference to `k` as well.
+
+## Finalizers
+These are functions to be called when an object
+is about to be collected.
+
+The function is provided via the _metamethod_
+`__gc`
+
+```lua
+o = setmetatable({x=1}, {__gc = function(o) print(o.x) end})
+```
+
+Lua doesn't look for finalizers every time it 
+deletes an object. Instead, Lua stores a list of 
+objects that have finalizers, to know if it has to
+call them or not. This can have bizarre consequences
+if you set a `__gc` metamethod to a metatable after
+you have assigned it to an object. Since at the 
+moment of declaration that object didn't have a 
+`__gc` metamethod, Lua didn't mark it for 
+finalization so `__gc` will not be called, even 
+when the metamethod isn't `nil` once it happens.
+
+Lua makes garbage collection of objects marked
+for finalization in 2 phases. Since the `__gc` 
+metamethod receives the object as its first parameter,
+`__gc` could _resurrect_ it by assigning it to 
+a global variable.
+ * On the first phase, an oject marked for 
+ finalization with no strong references left is found
+ by Lua, who runs their `__gc` metamethod, and marks 
+ them as finalized.
+
+ * On the second phase, an object marked as finalized
+ with no strong references left is deleted, since 
+ their finalizer was already called.
+
+We are guaranteed that a finalizer of an object runs
+exactly once
+
+One more subtlety with weak tables: the collector 
+clears the values in a weak table before calling the
+finalizer, but clears the keys after it.
+
+## The garbage collector
+
+Up to 5.0, it was a _mark-and-sweep_ garbage collector  
+In 5.1, it was a _incremental_ garbage collector  
+In 5.2, it was a _emergency_ garbage collector  
+
+All collectors perform this 4 phases:
+ * **Mark:**  
+   All reachable objects are marked as alive
+ * **Cleaning:**  
+   Lua handles finalizers and weak tables: 
+   1. Look for objects marked for finalization
+   with no references, and separate them in a list
+   2. Traverse the weak tables and delete entries
+ * **Sweep:**  
+  Collects objects not marked as alive, or clears
+  its alive mark
+ * **Finalization:**  
+  Calls the finalizers of the objects separated in 
+  the cleaning phase
+
+## `collectgarbage()`
+
+`collectgarbage("stop")` stops the collector until
+another call with `"restart"`
+
+`collectgarbage("restart")` see above
+
+`collectgarbage("collect")` performs a garbage 
+collection cycle
+
+`collectgarbage("step", data)` does the work 
+equivalent to what it would do after allocating
+`data` bytes. `data=0` means minimal steps
+
+`collectgarbage("count")` returns the number of kB
+of memory currently in use by Lua. This is a double, 
+multiplied by 1024 gives the exact number of bytes
+
+`collectgarbage("setpause", data)` sets the 
+collector's `pause` parameter. `data` is a percentage,
+i.e. `data=100` would be a 100%
+
+`collectgarbage("setstepmul", data)` sets the 
+collector's step multiplier parameter `stepmul`.`data`
+is a percentage, i.e. `data=100` would be a 100%
+
+With garbage collectors (GC), we trade memory for CPU 
+time.
+
+The `pause` parameter controls how much the GC waits
+before doing another cycle. A pause of `data` waits
+for memory usage to reach `data`% of what it is now
+to perform another cycle. Keep between 0 and 200  
+↓ pause ←→ ↓ memory ←→ ↑ time
+
+The `stempul` parameter controls how much work the
+collector does for each kB of data. Below 100% would
+make it too slow. The default is 200%
+
+
