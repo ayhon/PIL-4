@@ -2368,4 +2368,189 @@ The `stempul` parameter controls how much work the
 collector does for each kB of data. Below 100% would
 make it too slow. The default is 200%
 
+# Chapter 24 - Coroutines
 
+Coroutines are similar to threads, except that 
+coroutines are collaborative. At any given time, a 
+program with coroutines is running only one of its
+coroutines, and this running coroutine suspends its
+execution only when it explicitly requests to be
+suspended.
+
+All of this functionality is accessed through the 
+`coroutine` table
+
+Coroutines are created through the function 
+`coroutine.create(f)` command, which takes a single
+argument, a function with the code the coroutine 
+will run (the body)
+
+A coroutine can be in one of four states:
+ * suspended _(Default in creation)_
+ * running
+ * normal
+ * dead
+
+Check for state using the `coroutine.status(co)`
+
+Resume or start a coroutine with the function
+`coroutine.resume(co)` in protected mode, which 
+means that errors are returned, not shown. If the
+coroutine is dead, it also returns `false` and an 
+error message.  
+It returns `true` if no errors happened, plus all
+the arguments passed to `yield`, if that's how
+it got recalled, or the return values of the 
+function  
+You can also pass `coroutine.resume(co,...)` extra
+arguments to pass to a `coroutine.yield()` 
+statement
+
+When all the body of a coroutine is finished, the
+coroutine enters the dead state.
+
+The power of coroutines comes from the function
+`coroutine.yield()`, which allows a coroutine to
+suspend its own execution to be resumed later.
+Any arguments passed to `yield` will be received 
+by the function who called `.resume` on it.
+
+If a running coroutine calls another coroutine,
+it enters normal state, since it cannot be 
+suspended (You can't resume it), but it's also 
+not running.
+
+Lua offers _asymmetric coroutines_, which means
+that there are two distinct functions to:
+ 1. Suspend the execution of a coroutine
+ 2. Resume a suspended coroutine
+
+#### Example of producer-consumer pattern
+```lua
+function receive(prod)
+	local status, value = coroutine.resume(prod)
+	return value
+end
+
+function send(x)
+	coroutine.yield(x)
+end
+
+function producer()
+	return coroutine.create(function()
+		while true do
+			local x = io.read() -- Produce new value
+			send(x)
+		end
+	end)
+end
+
+function filter (prod)
+	return coroutine.create(function()
+		for line = 1, math.huge do
+			local x = receive(prod) -- get new value
+			x = string.format("%5d %s", line, x)
+			send(x) 	-- send to consumer
+		end
+	end)
+end
+
+function consumer (prod)
+	while true do
+		local x = receive(prod)
+		io.write(x, "\n")
+	end
+end
+```
+
+We can use coroutines to implement iterators 
+without worrying about keeping state.
+
+For example, we can iterate over permutations
+of a list like this
+
+```lua
+function permgen(a, n)
+	n = n or #a
+	if n <= 1 theen
+		coroutine.yield(a)
+	else
+		for i = 1, n do
+			a[n], a[i] = a[i], a[n] -- swap
+			permgen(a, n-1)
+			a[n], a[i] = a[i], a[n] -- swap (restore)
+		end
+	end
+end
+
+function permutations(a)
+	local co = coroutine.create(function() permgen(a) end)
+	return function()
+		local code, res = coroutine.resume(co)
+		return res
+	end
+end
+```
+
+To simplify `permutations`, we can use the 
+function `coroutines.wrap(f)`, which takes
+a function `f` and returns a function that
+resumes a created coroutine with body `f`.
+
+`wrap` doesn't return error codes, so use 
+is sometimes more convenient, but less 
+flexible regarding errors.
+
+The `permutations` function would end up like 
+this
+```lua
+function permutations(a)
+	return coroutine.wrap(function() permgen(a) end)
+end
+```
+
+## Event-driven programming
+
+Trying to understand this example:
+
+Async library simulation:
+```lua
+-- async-lib.lua
+lib.runloop() -- Start the event loop
+lib.readline(stream, callback) -- Fire read-line event
+lib.writeline(stream, line, callback) -- Fire writen-line event
+lib.stop() -- Stop the event loop
+```
+
+A program to print the lines in reverse orther 
+would look something like this
+```lua
+local lib = require "async-lib"
+
+local t = {}
+local inp = io.input()
+local out = io.output()
+local i 
+
+local function putline()
+	i = i-1
+	if i == 0 then
+		lib.stop()
+	else
+		lib.writeline(out, t[i].."\n", putline)
+	end
+end
+
+local function getline(line)
+	if line then
+		t[#t + 1] = line
+		lib.readline(inp, getline)
+	else
+		i = #t + 1
+		putline()
+	end
+end
+
+lib.readline(inp, getline)
+lib.runloop()
+```
