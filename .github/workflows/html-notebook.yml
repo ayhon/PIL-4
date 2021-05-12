@@ -16,6 +16,6 @@ jobs:
               with:
                   r-version: '3.5.3'
             - run: python3 -m pip install notebook
-            - run: R -e "install.packages("IRkernel")"
+            - run: R -e "install.packages(\"IRkernel\")"
             - run: R -e "IRkernel::installspec()"
             - run: jupyter nbconvert --execute --to html trabajo.ipynb
