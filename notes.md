@@ -2695,3 +2695,5 @@ As a rule of thumb:
    because of finalizers possibly overcoming the 
    sandboxing and metamethods being used to circumvent
    it
+
+# Chapter 26
