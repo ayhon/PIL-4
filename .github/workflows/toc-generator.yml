@@ -2,7 +2,7 @@ name: Generator TOC
 on:
     push:
         branches: [main]
-        paths: ['foo.md']
+        paths: ['notes.md']
 
     jobs:
         build:
