@@ -1,3 +1,4 @@
+name: Generator TOC
 on:
     push:
         branches: [main]
