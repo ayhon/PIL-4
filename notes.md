@@ -2554,3 +2554,144 @@ end
 lib.readline(inp, getline)
 lib.runloop()
 ```
+
+# Chapter 25 - reflection
+
+The `debug` library comprise 2 kinds of 
+functions:
+ * Introspective functions  
+   Inspect aspects of the running program (stack,
+   current exec line, values and names of 
+   variables)
+ * Hooks
+   Allows us to trace the execution of the program
+
+Use `debug` scarcely. It's sometimes not performant.
+
+## Introspective facilities
+
+`getinfo` is the main one. Takes a function or stack 
+level as its first argument.
+
+When called with a function, it returns a table with
+(possibly) the following fields:
+
+ -  `source` "@filename" or "code", if it was a loaded
+    string
+
+ - `short_src` short version (up to 60 chars) of above
+
+ - `linedefined` first line number where it was defined
+
+ - `lastlinedefined` same as above, but last
+
+ - `what` "Lua", if it's a regular function, "C" if it
+    is a C function, or "main" if its the main part of
+	a Lua chunck.
+
+ - `name` reasonable name for the function
+
+ - `namewhat` "global", "local", "method", "field" or 
+    "" if nothing was found
+
+ - `nups` number of upvalues (values from outside)
+
+ - `nparams` number of parameters
+
+ - `isvararg` whether function is variadic
+
+ - `activelines` number of lines with code (not empty)
+
+ - `func` has the function itself
+
+If we provide a number, information is returned about 
+the function at that stack level, where 0 is `getinfo`
+and `nil` is returned if the number given is too large
+
+Since `getinfo` isn't performant, you can supply it 
+with a list of information to look for as a second 
+argument, which takes a string with characters.
+ 
+ - `n` selects `name` and `namewhat`
+ - `f` selects `func`
+ - `S` selects `source`, `short_src`, `what`, 
+       `linedefined` and `lastlinedefined`
+ - `l` selects `currentline`
+ - `L` selects `activelines`
+ - `u` selects `nup`, `nparams` and `isvararg`
+
+`traceback` returns a string with traceback information
+
+### Accessing local variables
+
+With `getlocal(stack_level, idx)` get the `idx`-th 
+variable at `stack_level`. These are ordered from oldest
+to newest.
+
+Negative indexes get information about extra arguments
+of variadic functions. 
+
+With `getupvalue`, you can access upvalues. Provide a 
+function instead of `stack_trace`.
+
+You can update upvalues with `setupvalue`
+
+### Accessing coroutines
+
+When a coroutine fails, it doesn't unwind its own stack.
+We can provide most `debug` library functions a coroutine
+to see information about it.
+
+## Hooks
+
+You can ask Lua to run functions at certain events.
+These are:
+ 1. Call events (When Lua calls a function)
+ 2. Return events (When a function returns)
+ 3. Line events (When Lua executes a new line of code)
+ 4. Count events (After a given number of instructions)
+
+Register hooks with 
+`debug.sethook(function, mask_string[, count])`. The
+mask string specifies the event to hook too by their
+first letter (`"c"`, `"r"`, `"l"`), except count events.
+For those just specify a `count`.
+
+`debug.debug()` opens a Lua prompt (Using the global 
+environment) and allows the user to execute commands
+until `cont` is entered.
+
+## Profiles
+Profiling is analysing the behaviour of a program 
+regarding its use of resources (i.e. time and memory)
+
+Usually, it's best to use the C interface. For counting,
+Lua is fine
+
+## Sandboxing
+
+We saw how to restrict function usage by using `_ENV`
+
+You can control the number of instructions run with a
+hook
+
+You can control the amount of memory used with the
+`collectgarbage("count")` function, by hooking it
+to each line. It should be called pretty frequently
+though, as memory can grow fast
+
+Functions of the `string` library can be accessed
+through the strings metatable, even when it's
+restricted through `_ENV`. A way to combat this 
+is to check in every function call if the function
+is permitted
+
+As a rule of thumb:
+ * Functions from `math` are safe
+ * Functions from `string` are safe, though they 
+   can be resource intensive
+ * Functions from `package` and `debug` are **dangerous**
+ * `setmetatable` and `getmetatable` can be dangerous,
+   because of finalizers possibly overcoming the 
+   sandboxing and metamethods being used to circumvent
+   it
