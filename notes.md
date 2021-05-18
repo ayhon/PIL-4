@@ -2696,4 +2696,10 @@ As a rule of thumb:
    sandboxing and metamethods being used to circumvent
    it
 
-# Chapter 26
+# Chapter 26 - Interlude: Multithreading with coroutines
+
+You can pseudo-implement multithreading with coroutines.
+It works in mysterious ways, I haven't really understood
+completely, I think. I might have to revisit it.
+
+
